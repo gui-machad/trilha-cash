@@ -1,0 +1,1147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trilha do Cash</title>
+<meta name="description" content="Escola de poker de cash: jogue mãos completas com correção, lições, exercícios e cartões.">
+<meta name="theme-color" content="#13604A">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Trilha do Cash">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+body{margin:0;font:14px/1.45 system-ui,-apple-system,sans-serif;-webkit-text-size-adjust:100%}
+img{max-width:100%}[hidden]{display:none!important}
+</style>
+<style>
+/* Layout: uma coluna estreita com abas (Hoje · Trilha · Cartões); o treino ocupa a tela com cartas no feltro e botões grandes. */
+:root{
+  --bg:#EEF0EA; --surface:#FFFFFF; --surface-2:#F3F5EF; --ink:#18201B; --muted:#5E6A61; --line:#D5DCD3;
+  --felt:#13604A; --felt-2:#0B3F30; --felt-ink:#E6F1EB; --felt-muted:#A3C8B6;
+  --gold:#C8901A; --gold-soft:#F7EBCF; --accent:#0C7A55; --accent-soft:#D6ECE1;
+  --good:#17824A; --good-soft:#DCF0E3; --bad:#C0303D; --bad-soft:#F7DDDF;
+  --raise:#1E9457; --call:#E2AE2C; --check:#3B7DD8; --fold:#C9343F;
+  --card:#FDFEFD; --card-line:#C5D0CA;
+  --s0:#1A1F1C; --s1:#C8283C; --s2:#1E5DC0; --s3:#1B7A37;
+  --f-display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --f-body:"Barlow",system-ui,-apple-system,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B110E; --surface:#141D19; --surface-2:#1B2621; --ink:#E3ECE7; --muted:#97A99F; --line:#2A3832;
+    --felt:#0F4A38; --felt-2:#082A1F; --felt-ink:#E3F0E9; --felt-muted:#86B29E;
+    --gold:#E9B444; --gold-soft:#3A2D10; --accent:#3AC48D; --accent-soft:#143A2C;
+    --good:#45C681; --good-soft:#12301F; --bad:#F06C77; --bad-soft:#3C171C;
+    --card:#E4EAE6; --card-line:#8FA299;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B110E; --surface:#141D19; --surface-2:#1B2621; --ink:#E3ECE7; --muted:#97A99F; --line:#2A3832;
+  --felt:#0F4A38; --felt-2:#082A1F; --felt-ink:#E3F0E9; --felt-muted:#86B29E;
+  --gold:#E9B444; --gold-soft:#3A2D10; --accent:#3AC48D; --accent-soft:#143A2C;
+  --good:#45C681; --good-soft:#12301F; --bad:#F06C77; --bad-soft:#3C171C;
+  --card:#E4EAE6; --card-line:#8FA299;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.app{max-width:600px;margin:0 auto;padding-block:14px 90px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;align-items:center;gap:10px}
+.logo{width:34px;height:34px;border-radius:9px;background:var(--felt);display:grid;place-items:center;color:var(--gold);font-size:19px}
+h1{font-family:var(--f-display);font-weight:700;font-size:28px;text-transform:uppercase;letter-spacing:.02em;margin:0;line-height:1}
+.sync{margin-left:auto;font-size:12px;color:var(--muted);text-align:right}
+h2{font-family:var(--f-display);font-weight:700;font-size:24px;text-transform:uppercase;letter-spacing:.03em;margin:0;line-height:1.05}
+h3{margin:0;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-top:12px}
+.muted{color:var(--muted)}
+.help{font-size:13px;color:var(--muted)}
+/* Abas fixas embaixo */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:center;background:var(--surface);border-top:1.5px solid var(--line);padding:6px max(16px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%;max-width:600px}
+nav.tabs button{border:0;background:transparent;border-radius:12px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;font-size:13px;color:var(--muted)}
+nav.tabs button span{font-size:20px;line-height:1}
+nav.tabs button[aria-current="page"]{background:var(--accent-soft);color:var(--ink)}
+/* Hoje */
+.level{display:flex;align-items:center;gap:14px}
+.medal{flex:none;width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--gold) 0%,color-mix(in srgb,var(--gold) 60%,#000 40%) 100%);display:grid;place-items:center;color:#1F1600;font:700 22px var(--f-display);box-shadow:inset 0 0 0 4px rgba(255,255,255,.25)}
+.lvname{font-family:var(--f-display);font-weight:700;font-size:26px;text-transform:uppercase;line-height:1}
+.bar{height:10px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;margin-top:8px}
+.bar span{display:block;height:100%;background:var(--gold)}
+.stats3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+.stat{background:var(--surface-2);border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font-family:var(--f-mono);font-size:22px}
+.stat small{font-size:12px;color:var(--muted)}
+.big{width:100%;min-height:60px;border-radius:14px;border:0;background:var(--ink);color:var(--bg);font-size:18px;font-weight:700;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 14px}
+.big small{font-weight:500;opacity:.75;font-size:14px}
+.big.alt{background:var(--surface-2);color:var(--ink);border:1.5px solid var(--line)}
+.big.gold{background:var(--gold);color:#1F1600}
+.weak{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-direction:column;gap:6px}
+.weak li{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:15px}
+.weak li b{font-family:var(--f-mono)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{min-height:42px;border-radius:10px;border:2px solid var(--line);background:var(--surface-2);font-weight:700;font-size:15px;padding:6px 12px}
+.chip.sel{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.setrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;margin-top:12px}
+.setrow > span{font-weight:700;font-size:15px}
+/* Trilha */
+.mods{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.mod{width:100%;text-align:left;display:flex;align-items:center;gap:12px;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px}
+.mod .num{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:700 15px var(--f-mono);background:var(--surface-2);border:2px solid var(--line)}
+.mod.done .num{background:var(--gold);border-color:var(--gold);color:#1F1600}
+.mod.next{border-color:var(--ink)}
+.mod .tt{font-weight:700;font-size:17px;line-height:1.2}
+.mod .st{font-size:13px;color:var(--muted)}
+.mod .pc{margin-left:auto;font-family:var(--f-mono);font-weight:700;font-size:15px}
+.stage{font-family:var(--f-display);font-weight:700;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:18px 0 6px}
+/* Lição */
+.back{border:0;background:none;color:var(--accent);font-weight:700;padding:4px 0;font-size:15px}
+.lesson h4{font-size:17px;margin:16px 0 6px}
+.lesson p{margin:8px 0}
+.lesson ul{margin:6px 0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.lesson table{border-collapse:collapse;width:100%;font-size:15px;margin:8px 0}
+.lesson td,.lesson th{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left}
+.lesson th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lesson td b{font-family:var(--f-mono)}
+.decore{background:var(--gold-soft);border-radius:12px;padding:12px 14px;margin:14px 0}
+.decore b:first-child{display:block;font-family:var(--f-display);letter-spacing:.08em;text-transform:uppercase;font-size:14px;margin-bottom:4px}
+.ex{background:var(--surface-2);border-radius:12px;padding:12px 14px;margin:12px 0}
+.tablewrap{overflow-x:auto}
+/* Treino */
+.qhead{display:flex;align-items:center;gap:10px}
+.qhead .prog{margin-left:auto;font-family:var(--f-mono);font-weight:700}
+.dots{display:flex;gap:4px;margin-top:10px}
+.dots i{flex:1;height:6px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line)}
+.dots i.ok{background:var(--good);border-color:var(--good)}
+.dots i.bad{background:var(--bad);border-color:var(--bad)}
+.dots i.cur{background:var(--gold);border-color:var(--gold)}
+.tag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-top:14px}
+.felt{margin-top:10px;border-radius:14px;padding:10px 12px;background:radial-gradient(120% 140% at 0% 0%,var(--felt) 0%,var(--felt-2) 100%);display:flex;flex-direction:column;gap:8px}
+.frow{display:flex;align-items:center;gap:6px}
+.frow .lb{width:52px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--felt-muted)}
+.pc{width:50px;aspect-ratio:5/7;border-radius:7px;background:var(--card);border:1px solid var(--card-line);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.pc.sm{width:44px}
+.pc b{font-family:var(--f-display);font-weight:700;font-size:23px}
+.pc i{font-style:normal;font-size:18px;margin-top:1px}
+.mini{display:inline-flex;gap:3px;flex-wrap:wrap}
+.mc{width:24px;aspect-ratio:5/7;border-radius:4px;background:var(--card);border:1px solid var(--card-line);display:inline-flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.mc b{font-family:var(--f-display);font-weight:700;font-size:13px}
+.mc i{font-style:normal;font-size:9px}
+.s0{color:var(--s0)}.s1{color:var(--s1)}.s2{color:var(--s2)}.s3{color:var(--s3)}
+.qtext{font-size:20px;font-weight:700;line-height:1.3;margin:14px 0 10px}
+.timer{height:10px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+.timer span{display:block;height:100%;background:var(--accent);transition:width .1s linear}
+.timer span.low{background:var(--fold)}
+.tleft{font:700 13px var(--f-mono);text-align:right;color:var(--muted);margin:4px 0 8px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.opts.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.opts.one{grid-template-columns:1fr}
+.opt{min-height:64px;border-radius:14px;border:2px solid var(--line);background:var(--surface-2);font-size:17px;font-weight:700;padding:8px;line-height:1.2;overflow-wrap:anywhere}
+.opt.act{font-family:var(--f-display);font-size:24px;text-transform:uppercase;letter-spacing:.03em}
+.opt.a-fold{border-color:var(--fold);color:var(--fold)}
+.opt.a-call{border-color:var(--call);color:color-mix(in srgb,var(--call) 70%,var(--ink) 30%)}
+.opt.a-raise{border-color:var(--raise);color:var(--raise)}
+.opt.a-check{border-color:var(--check);color:var(--check)}
+.opt.right{background:var(--good);border-color:var(--good);color:#fff}
+.opt.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt.dim{opacity:.4}
+.fb{margin-top:14px;border-radius:12px;padding:12px 14px;font-size:15px}
+.fb.ok{background:var(--good-soft)}
+.fb.bad{background:var(--bad-soft)}
+.fb > b{font-size:18px}
+.fb p{margin:8px 0 0}
+.linkbtn{border:0;background:none;color:var(--accent);font-weight:700;font-size:14px;padding:8px 0;text-decoration:underline;text-underline-offset:3px}
+.range-wrap{overflow-x:auto;margin-top:6px}
+.range{display:grid;grid-template-columns:repeat(13,minmax(22px,1fr));gap:2px;min-width:300px}
+.rc{aspect-ratio:1;display:grid;place-items:center;font-family:var(--f-mono);font-size:clamp(8px,2vw,11px);border-radius:3px}
+.rc.raise{background:var(--raise);color:#fff}
+.rc.call{background:var(--call);color:#241900}
+.rc.fold{background:var(--bad-soft);color:var(--bad)}
+.rc.me{outline:3px solid var(--ink);outline-offset:-1px;font-weight:700;position:relative;z-index:1}
+.summary{text-align:center}
+.summary .score{font-family:var(--f-display);font-weight:700;font-size:64px;line-height:1}
+/* Cartões */
+.flash{min-height:220px;border-radius:18px;background:radial-gradient(120% 140% at 0% 0%,var(--felt) 0%,var(--felt-2) 100%);color:var(--felt-ink);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;margin-top:12px}
+.flash .front{font-size:22px;font-weight:700;line-height:1.3}
+.flash .backtxt{margin-top:14px;font-size:20px;color:var(--gold);font-weight:700;line-height:1.35}
+.flash .topic{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--felt-muted);margin-bottom:10px}
+.boxes{display:flex;gap:6px;margin-top:10px}
+.boxes div{flex:1;text-align:center;background:var(--surface-2);border-radius:10px;padding:6px 2px}
+.boxes b{display:block;font-family:var(--f-mono);font-size:18px}
+.boxes small{font-size:11px;color:var(--muted)}
+.cardlist{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-direction:column;gap:6px}
+.cardlist li{background:var(--surface-2);border-radius:10px;padding:8px 12px;font-size:14px;display:flex;justify-content:space-between;gap:10px}
+.cardlist li b{color:var(--accent)}
+@media (max-width:380px){.pc{width:44px}.pc.sm{width:40px}.opt.act{font-size:21px}.qtext{font-size:18px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* Jogar mãos */
+.pc.back{background:repeating-linear-gradient(45deg,#7A2E2E 0 6px,#923838 6px 12px);border-color:#5A1F1F}
+.potc{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;font-size:11px;color:var(--felt-muted);line-height:1.1}
+.potc b{font-family:var(--f-mono);font-size:16px;color:var(--felt-ink)}
+.hlog{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.hlog li{font-size:14px;padding:6px 10px;border-radius:8px;background:var(--surface-2);border-left:4px solid var(--line)}
+.hlog li.vil{border-left-color:#7A4FD0}
+.hlog li.hero{border-left-color:var(--gold)}
+.hlog li.board{border-left-color:var(--accent);font-weight:700}
+.hopt{font-size:16px}
+.rinfo{margin-top:10px;display:flex;flex-direction:column;gap:4px}
+.rinfo small{color:var(--muted);font-size:12px}
+.rbar{display:grid;grid-template-columns:150px minmax(0,1fr) 42px;align-items:center;gap:8px;font-size:13px}
+.rbar i{height:8px;border-radius:99px;background:var(--surface);overflow:hidden;display:block}
+.rbar em{display:block;height:100%;background:#7A4FD0}
+.rbar b{font-family:var(--f-mono);text-align:right}
+.declist{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:6px}
+.declist li{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;background:var(--surface-2);border-radius:10px;padding:8px 12px;font-size:14px}
+.declist li.ok b{color:var(--good)}.declist li.bad b{color:var(--bad)}
+.declist small{color:var(--muted);width:100%}
+.hstats{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+.hstats ul{list-style:none;padding:0;margin:8px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hstats li{background:var(--surface-2);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column}
+.hstats li b{font-family:var(--f-mono);font-size:20px}
+.hstats li small{color:var(--muted);font-size:12px}
+@media (max-width:380px){.rbar{grid-template-columns:120px minmax(0,1fr) 38px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <span class="logo" aria-hidden="true">♠&#xFE0E;</span>
+    <h1>Trilha do Cash</h1>
+    <span class="sync" id="sync">salvo neste aparelho</span>
+  </header>
+  <main id="main"></main>
+</div>
+<nav class="tabs" aria-label="Seções"><div class="in">
+  <button type="button" data-act="tab" data-t="jogar"><span>♠&#xFE0E;</span>Jogar</button>
+  <button type="button" data-act="tab" data-t="hoje"><span>☀︎</span>Hoje</button>
+  <button type="button" data-act="tab" data-t="trilha"><span>⛰︎</span>Trilha</button>
+  <button type="button" data-act="tab" data-t="cartoes"><span>🂠&#xFE0E;</span>Cartões</button>
+</div></nav>
+
+<script>
+/* ================= Motor de mãos ================= */
+const RANKS = "23456789TJQKA";
+const rcnt = new Int8Array(13), scnt = new Int8Array(4), smask = new Int32Array(4);
+function straightHigh(mask){
+  for (let h = 12; h >= 4; h--){ const m = 0x1F << (h - 4); if ((mask & m) === m) return h; }
+  if ((mask & 0x100F) === 0x100F) return 3;
+  return -1;
+}
+function kickers(val, shift, count, a, b){
+  for (let r = 12; r >= 0 && count > 0; r--){ if (rcnt[r] && r !== a && r !== b){ val |= (r + 1) << shift; shift -= 4; count--; } }
+  return val;
+}
+function evalCards(cards, n){
+  rcnt.fill(0); scnt.fill(0); smask.fill(0); let mask = 0;
+  for (let i = 0; i < n; i++){ const c = cards[i], r = c >> 2, s = c & 3; rcnt[r]++; scnt[s]++; smask[s] |= 1 << r; mask |= 1 << r; }
+  let fs = -1; for (let s = 0; s < 4; s++) if (scnt[s] >= 5){ fs = s; break; }
+  if (fs >= 0){ const h = straightHigh(smask[fs]); if (h >= 0) return (8 << 20) | ((h + 1) << 16); }
+  let quad = -1, t1 = -1, t2 = -1, p1 = -1, p2 = -1;
+  for (let r = 12; r >= 0; r--){ const k = rcnt[r];
+    if (k === 4){ if (quad < 0) quad = r; } else if (k === 3){ if (t1 < 0) t1 = r; else if (t2 < 0) t2 = r; } else if (k === 2){ if (p1 < 0) p1 = r; else if (p2 < 0) p2 = r; } }
+  if (quad >= 0) return kickers((7 << 20) | ((quad + 1) << 16), 12, 1, quad, -1);
+  if (t1 >= 0 && (t2 >= 0 || p1 >= 0)){ const pr = Math.max(t2, p1); return (6 << 20) | ((t1 + 1) << 16) | ((pr + 1) << 12); }
+  if (fs >= 0){ let v = 5 << 20, sh = 16, cnt = 5; const fm = smask[fs]; for (let r = 12; r >= 0 && cnt > 0; r--) if (fm & (1 << r)){ v |= (r + 1) << sh; sh -= 4; cnt--; } return v; }
+  const st = straightHigh(mask); if (st >= 0) return (4 << 20) | ((st + 1) << 16);
+  if (t1 >= 0) return kickers((3 << 20) | ((t1 + 1) << 16), 12, 2, t1, -1);
+  if (p1 >= 0 && p2 >= 0) return kickers((2 << 20) | ((p1 + 1) << 16) | ((p2 + 1) << 12), 8, 1, p1, p2);
+  if (p1 >= 0) return kickers((1 << 20) | ((p1 + 1) << 16), 12, 3, p1, -1);
+  return kickers(0, 16, 5, -1, -1);
+}
+function computeOuts(hero, board){
+  const known = new Set([...hero, ...board]);
+  const cur = evalCards([...hero, ...board], 2 + board.length) >> 20;
+  const boardRanks = new Set(board.map(c => c >> 2)), list = [];
+  for (let c = 0; c < 52; c++){
+    if (known.has(c)) continue;
+    const hc = evalCards([...hero, ...board, c], 3 + board.length) >> 20, bc = evalCards([...board, c], 1 + board.length) >> 20;
+    if (hc <= cur || hc <= bc) continue;
+    if (hc === 2 && boardRanks.has(c >> 2)) continue;
+    list.push({ c, cat: hc });
+  }
+  const unseen = 52 - known.size, n = list.length;
+  const prob = board.length === 3 ? 1 - ((unseen - n) * (unseen - n - 1)) / (unseen * (unseen - 1)) : n / unseen;
+  return { list, n, prob, cur, next: n / unseen };
+}
+const SUITS = ["♠︎", "♥︎", "♦︎", "♣︎"];
+const CAT = ["Carta alta","Par","Dois pares","Trinca","Sequência","Flush","Full house","Quadra","Straight flush"];
+const rl = r => r === 8 ? "10" : RANKS[r];
+function describe(score){
+  const cat = score >> 20, a = ((score >> 16) & 15) - 1, b = ((score >> 12) & 15) - 1;
+  return [`Carta alta ${rl(a)}`, `Par de ${rl(a)}`, `Dois pares, ${rl(a)} e ${rl(b)}`, `Trinca de ${rl(a)}`, `Sequência até ${rl(a)}`, `Flush, ${rl(a)} alto`, `Full house, ${rl(a)} com ${rl(b)}`, `Quadra de ${rl(a)}`, a === 12 ? "Royal flush" : `Straight flush até ${rl(a)}`][cat];
+}
+function handCode(a, b){
+  let r1 = a >> 2, r2 = b >> 2; if (r1 < r2) [r1, r2] = [r2, r1];
+  if (r1 === r2) return RANKS[r1] + RANKS[r2];
+  return RANKS[r1] + RANKS[r2] + ((a & 3) === (b & 3) ? "s" : "o");
+}
+function parseRange(str){
+  const S = new Set(), I = ch => RANKS.indexOf(ch);
+  for (let t of str.split(",")){
+    t = t.trim(); if (!t) continue;
+    const m = t.match(/^([2-9TJQKA])([2-9TJQKA])([so]?)(\+)?(?:-([2-9TJQKA])([2-9TJQKA])[so]?)?$/); if (!m) continue;
+    const h = I(m[1]), l = I(m[2]), sfx = m[3], plus = !!m[4];
+    if (h === l){ for (let r = h; r <= (plus ? 12 : h); r++) S.add(RANKS[r] + RANKS[r]); continue; }
+    let lo = l, hi = plus ? h - 1 : l;
+    if (m[6]){ const l2 = I(m[6]); lo = Math.min(l, l2); hi = Math.max(l, l2); }
+    for (let r = lo; r <= hi; r++) S.add(RANKS[h] + RANKS[r] + sfx);
+  }
+  return S;
+}
+const combos = code => code.length === 2 ? 6 : code[2] === "s" ? 4 : 12;
+const rangePct = set => { let n = 0; set.forEach(c => n += combos(c)); return n / 1326; };
+const ORDER = { 6: ["UTG","MP","CO","BTN","SB","BB"], 9: ["UTG","UTG+1","UTG+2","MP","HJ","CO","BTN","SB","BB"] };
+const POST_ORDER = { 6: ["SB","BB","UTG","MP","CO","BTN"], 9: ["SB","BB","UTG","UTG+1","UTG+2","MP","HJ","CO","BTN"] };
+const RANGE_BEHIND = {
+  8: "77+, ATs+, A5s, KTs+, QJs, JTs, AJo+, KQo",
+  7: "66+, A9s+, A5s, KTs+, QTs+, JTs, T9s, AJo+, KQo",
+  6: "55+, A8s+, A5s-A4s, K9s+, QTs+, JTs, T9s, 98s, ATo+, KQo",
+  5: "55+, A2s+, K9s+, Q9s+, J9s+, T9s, 98s, 87s, ATo+, KJo+",
+  4: "44+, A2s+, K8s+, Q9s+, J9s+, T8s+, 98s, 87s, 76s, A9o+, KJo+, QJo",
+  3: "33+, A2s+, K8s+, Q9s+, J8s+, T8s+, 97s+, 87s, 76s, 65s, A9o+, KTo+, QTo+, JTo",
+  2: "22+, A2s+, K4s+, Q6s+, J7s+, T7s+, 96s+, 85s+, 75s+, 64s+, 53s+, A4o+, K9o+, Q9o+, J9o+, T9o, 98o",
+  1: "22+, A2s+, K5s+, Q7s+, J7s+, T7s+, 97s+, 86s+, 75s+, 65s, 54s, A7o+, A5o, K9o+, Q9o+, J9o+, T9o"
+};
+const RB = Object.fromEntries(Object.entries(RANGE_BEHIND).map(([k, v]) => [k, parseRange(v)]));
+const VS_3BET = parseRange("TT+, AQs+, AKo, A5s-A4s");
+const VS_CALL = parseRange("99, 88, 77, 66, 55, 44, 33, 22, AJs, ATs, KQs, KJs, QJs, JTs, T9s, 98s, AQo, KQo");
+const BB_DEF = parseRange("22+, A2s+, K2s+, Q4s+, J6s+, T6s+, 96s+, 85s+, 74s+, 63s+, 53s+, 43s, A2o+, K7o+, Q8o+, J8o+, T8o+, 98o, 87o");
+const behind = (n, p) => ORDER[n].length - 1 - ORDER[n].indexOf(p);
+const openSet = (n, p) => RB[Math.min(8, Math.max(1, behind(n, p)))];
+function chartAction(code, mode, n, pos){
+  if (mode === "open") return openSet(n, pos).has(code) ? "raise" : "fold";
+  if (VS_3BET.has(code)) return "raise";
+  return (pos === "BB" ? BB_DEF : VS_CALL).has(code) ? "call" : "fold";
+}
+
+/* ================= Progresso ================= */
+const LEVELS = [[0, "Iniciante"], [300, "Aprendiz"], [1000, "Regular"], [2500, "Grinder"], [5000, "Shark"], [9000, "Mestre"]];
+const BOX_DAYS = [0, 1, 3, 7, 14, 30];
+const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+const addDays = (s, k) => { const d = new Date(s + "T12:00:00"); d.setDate(d.getDate() + k); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+function blankP(){ return { xp: 0, days: {}, mods: {}, cards: {}, read: {}, set: { timer: 0, players: 9, bb: 2 }, updatedAt: 0 }; }
+function normalize(o){ const b = blankP(); return { ...b, ...o, set: { ...b.set, ...(o.set || {}) } }; }
+let P = blankP();
+try { const o = JSON.parse(localStorage.getItem("trilha-cash") || "null"); if (o) P = normalize(o); } catch (e) {}
+let DB = null, UID = null, saveT = null;
+function lsSave(){ try { localStorage.setItem("trilha-cash", JSON.stringify(P)); } catch (e) {} }
+function persist(){ P.updatedAt = Date.now(); lsSave(); clearTimeout(saveT); saveT = setTimeout(pushRemote, 1200); }
+async function pushRemote(){ if (!DB || !UID) return; try { await DB.doc("data/users/" + UID + "/progress").set({ p: JSON.stringify(P), at: P.updatedAt }); setSync("salvo na sua conta"); } catch (e) { setSync("salvo neste aparelho"); } }
+function setSync(t){ const el = document.getElementById("sync"); if (el) el.textContent = t; }
+(async () => {
+  try {
+    if (!window.claude || !window.claude.use) return;
+    const user = await window.claude.use("user"), db = await window.claude.use("db");
+    if (!user || !db) return;
+    const id = await user.id(); if (!id) return;
+    UID = id; DB = db;
+    const snap = await db.doc("data/users/" + id + "/progress").get();
+    if (snap.exists){
+      const d = snap.data(), remote = d && d.p ? normalize(JSON.parse(d.p)) : null;
+      if (remote && (remote.updatedAt || 0) > (P.updatedAt || 0)){ P = remote; lsSave(); render(); }
+      else if (P.updatedAt) pushRemote();
+    } else if (P.updatedAt) pushRemote();
+    setSync("salvo na sua conta");
+  } catch (e) { setSync("salvo neste aparelho"); }
+})();
+const level = () => { let i = 0; for (let k = 0; k < LEVELS.length; k++) if (P.xp >= LEVELS[k][0]) i = k; return i; };
+function modStat(id){ return P.mods[id] || { n: 0, ok: 0, recent: [], time: 0 }; }
+function modAcc(id){ const m = modStat(id); return m.recent.length ? m.recent.reduce((a, b) => a + b, 0) / m.recent.length : 0; }
+const mastered = id => { const m = modStat(id); return m.recent.length >= 20 && modAcc(id) >= 0.85; };
+function streak(){
+  let s = 0, d = today();
+  if (!P.days[d]) d = addDays(d, -1);
+  while (P.days[d]){ s++; d = addDays(d, -1); }
+  return s;
+}
+const money = x => "R$ " + (+x).toLocaleString("pt-BR", { maximumFractionDigits: 2 });
+const chip = x => Math.max(1, Math.round(x));
+const pctI = x => Math.round(x * 100) + "%";
+const rnd = n => (Math.random() * n) | 0;
+const pick = a => a[rnd(a.length)];
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--){ const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+function deal(k, used){ const u = new Set(used || []), out = []; while (out.length < k){ const c = rnd(52); if (!u.has(c)){ u.add(c); out.push(c); } } return out; }
+const cardHTML = (c, sm) => `<span class="pc ${sm ? "sm" : ""} s${c & 3}"><b>${rl(c >> 2)}</b><i>${SUITS[c & 3]}</i></span>`;
+const miniCard = c => `<span class="mc s${c & 3}"><b>${rl(c >> 2)}</b><i>${SUITS[c & 3]}</i></span>`;
+function numOpts(right, pool, k = 4, fmt = x => x){
+  const p = [...new Set(pool.filter(x => x !== right))].sort((a, b) => Math.abs(a - right) - Math.abs(b - right)).slice(0, k - 1);
+  return [right, ...p].sort((a, b) => a - b).map(fmt);
+}
+
+/* ================= Conteúdo: módulos ================= */
+const BET_SIZES = [[1/3, "⅓ do pote"], [0.5, "metade do pote"], [2/3, "⅔ do pote"], [0.75, "¾ do pote"], [1, "do tamanho do pote"], [1.5, "1,5x o pote"]];
+const MODS = [
+ { id: "fund", stage: "Base", title: "Ranking das mãos", sub: "quem ganha no showdown",
+   lesson: `<p>Toda decisão começa por saber o que ganha do quê. A melhor combinação de <b>5 cartas</b> entre as suas 2 e as 5 da mesa vence.</p>
+   <div class="tablewrap"><table><tr><th>#</th><th>Mão</th><th>Exemplo</th></tr>
+   <tr><td>1</td><td>Straight flush</td><td>9♥ 8♥ 7♥ 6♥ 5♥</td></tr><tr><td>2</td><td>Quadra</td><td>K K K K</td></tr><tr><td>3</td><td>Full house</td><td>Q Q Q 7 7</td></tr><tr><td>4</td><td>Flush</td><td>5 cartas do mesmo naipe</td></tr><tr><td>5</td><td>Sequência</td><td>10 9 8 7 6</td></tr><tr><td>6</td><td>Trinca</td><td>8 8 8</td></tr><tr><td>7</td><td>Dois pares</td><td>A A 4 4</td></tr><tr><td>8</td><td>Par</td><td>J J</td></tr><tr><td>9</td><td>Carta alta</td><td>A K 9 6 3</td></tr></table></div>
+   <h4>Desempates que confundem</h4><ul><li><b>Kicker:</b> com o mesmo par, ganha quem tem a maior carta de fora. A♠K♦ ganha de A♥Q♣ num board A-8-5-3-2.</li><li><b>A mesa joga:</b> se a melhor mão é a própria mesa, empata.</li><li><b>A-2-3-4-5</b> também é sequência (a mais baixa).</li><li>Naipe nunca desempata.</li></ul>
+   <div class="decore"><b>Decore</b>Flush ganha de sequência. Full ganha de flush. Dois pares sempre comparam o par maior primeiro.</div>` },
+ { id: "pos", stage: "Base", title: "Posição", sub: "quem fala por último ganha mais",
+   lesson: `<p>Falar <b>por último</b> depois do flop é a maior vantagem que existe no poker: você vê o que o outro fez antes de decidir.</p>
+   <h4>Ordem depois do flop (mesa de 9)</h4><p><b>SB → BB → UTG → UTG+1 → UTG+2 → MP → HJ → CO → BTN</b>. O botão (BTN) sempre fala por último.</p>
+   <h4>Ordem antes do flop</h4><p>Começa no UTG (do lado do big blind) e termina no BB.</p>
+   <ul><li><b>Em posição (IP):</b> você fala depois do vilão. Dá pra jogar mais mãos.</li><li><b>Fora de posição (OOP):</b> você fala antes. Jogue mais apertado, principalmente nos blinds.</li></ul>
+   <div class="decore"><b>Decore</b>Quanto mais perto do botão, mais mãos você pode jogar. Os blinds são as piores posições depois do flop.</div>` },
+ { id: "pre", stage: "Pré-flop", title: "Abrir o pote", sub: "aumentar ou largar quando ninguém entrou",
+   lesson: `<p>Quando ninguém aumentou antes de você: <b>aumente ou largue</b>. Só pagar o blind (limp) quase sempre é pior.</p>
+   <h4>Tamanho</h4><ul><li>3 big blinds. Ex.: blinds 1/2 → aumente para <b>R$ 6</b>.</li><li><b>+1 big por limper</b>: se 2 já pagaram o blind, aumente para R$ 10.</li></ul>
+   <h4>Quantas mãos abrir (mesa de 9)</h4><div class="tablewrap"><table><tr><th>Posição</th><th>Abre</th><th>Ideia</th></tr>
+   <tr><td>UTG</td><td><b>~11%</b></td><td>77+, ATs+, AJo+, KQo, KTs+</td></tr><tr><td>MP / HJ</td><td><b>~15–20%</b></td><td>+ pares 55, Axs, suited connectors altos</td></tr><tr><td>CO</td><td><b>~25%</b></td><td>+ 33, A9o, KTo, conectados suited</td></tr><tr><td>BTN</td><td><b>~40%</b></td><td>quase toda suited e broadways</td></tr><tr><td>SB</td><td><b>~35%</b></td><td>parecido com o botão, mas fora de posição</td></tr></table></div>
+   <div class="decore"><b>Decore</b>Do UTG só mão boa. Do botão, quase tudo que tem às, rei ou é suited conectado.</div>` },
+ { id: "vsr", stage: "Pré-flop", title: "Contra aumento", sub: "3-bet, call ou fold",
+   lesson: `<p>Alguém aumentou antes de você. Agora o range dele é forte, então o seu também precisa ser.</p>
+   <ul><li><b>3-bet (aumentar de novo):</b> TT+, AQs+, AK. Um pouco de A5s/A4s como blefe.</li><li><b>Call (pagar):</b> pares 22–99 (pra acertar trinca), suited fortes (AJs, KQs, QJs, JTs, T9s), AQo, KQo.</li><li><b>Fold:</b> o resto. Mão "bonita" fora de naipe tipo KJo, QTo, A9o perde dinheiro contra aumento.</li><li>Contra aumento do <b>UTG</b>, seja ainda mais apertado.</li><li>No <b>BB</b> você já pagou 1 big, então pode defender bem mais.</li></ul>
+   <h4>Tamanho do 3-bet</h4><p>3x o aumento em posição (aumentou pra R$ 6 → 3-bet pra R$ 18). +1x por quem já pagou.</p>
+   <div class="decore"><b>Decore</b>Contra aumento: aumentar com as melhores, pagar com pares e suited, largar o resto.</div>` },
+ { id: "odds", stage: "Matemática", title: "Pot odds", sub: "quanto você precisa pra pagar",
+   lesson: `<p>Antes de pagar uma aposta, pergunte: <b>quantas vezes preciso ganhar pra isso dar lucro?</b></p>
+   <p class="ex">Fórmula: <b>aposta ÷ (pote + 2 × aposta)</b><br>Pote R$ 100, aposta R$ 50 → 50 ÷ 200 = <b>25%</b></p>
+   <div class="tablewrap"><table><tr><th>Aposta do vilão</th><th>Você precisa</th></tr><tr><td>⅓ do pote</td><td><b>20%</b></td></tr><tr><td>metade do pote</td><td><b>25%</b></td></tr><tr><td>⅔ do pote</td><td><b>~29%</b></td></tr><tr><td>¾ do pote</td><td><b>30%</b></td></tr><tr><td>pote</td><td><b>33%</b></td></tr><tr><td>1,5x o pote</td><td><b>38%</b></td></tr><tr><td>2x o pote</td><td><b>40%</b></td></tr></table></div>
+   <div class="decore"><b>Truque</b>Quantas apostas cabem no pote? Some 2 e vire fração. Meio pote: 2 + 2 = 4 → 1 em 4 = 25%. Pote: 1 + 2 = 3 → 33%.</div>` },
+ { id: "outs", stage: "Matemática", title: "Outs e chance", sub: "quantas cartas te salvam",
+   lesson: `<p><b>Outs</b> são as cartas que ainda podem vir e deixar sua mão na frente.</p>
+   <div class="tablewrap"><table><tr><th>Situação</th><th>Outs</th></tr><tr><td>Flush draw (4 do naipe)</td><td><b>9</b></td></tr><tr><td>Sequência aberta (8-9-10-J)</td><td><b>8</b></td></tr><tr><td>Duas cartas maiores que a mesa</td><td><b>6</b></td></tr><tr><td>Gutshot (falta a do meio)</td><td><b>4</b></td></tr><tr><td>Par na mão querendo trinca</td><td><b>2</b></td></tr><tr><td>Flush draw + sequência aberta</td><td><b>15</b></td></tr></table></div>
+   <h4>Virar porcentagem</h4><ul><li><b>Uma carta por vir:</b> outs × 2 (flush draw ≈ 18%).</li><li><b>Duas cartas por vir</b> (só se você estiver all-in no flop): outs × 4 (flush draw ≈ 36%).</li></ul>
+   <div class="decore"><b>Decore</b>9 flush, 8 sequência aberta, 4 gutshot. Multiplica por 2 a cada carta.</div>` },
+ { id: "draw", stage: "Matemática", title: "Draw: pagar ou largar", sub: "juntando outs com pot odds",
+   lesson: `<p>Agora junte as duas contas: <b>minha chance (outs × 2) contra o que preciso (pot odds)</b>.</p>
+   <p class="ex">Flush draw (9 outs) → 9 × 2 ≈ <b>18%</b><br>Vilão aposta metade do pote → precisa <b>25%</b><br>18 &lt; 25 → <b>FOLD</b> (pela conta pura)</p>
+   <p class="ex">Mesmo draw, vilão aposta ⅓ do pote → precisa <b>20%</b><br>18 ≈ 20 → <b>decisão apertada</b>; pague se ele costuma pagar muito quando você acerta.</p>
+   <h4>Implied odds</h4><p>Se você ainda pode ganhar mais fichas quando acertar (stacks fundos, vilão que paga), dá pra pagar um pouco abaixo da conta. Se ele está quase all-in, não.</p>
+   <div class="decore"><b>Regra de bolso</b>Draw de 15 outs paga quase tudo. Gutshot (4) quase sempre larga contra aposta grande.</div>` },
+ { id: "tex", stage: "Depois do flop", title: "Textura do flop e c-bet", sub: "seco ou molhado, pequeno ou grande",
+   lesson: `<p><b>C-bet</b> é a aposta no flop de quem aumentou antes do flop. O tamanho depende do flop.</p>
+   <ul><li><b>Seco:</b> cartas sem naipe repetido e longe uma da outra. Ex.: K♠ 7♦ 2♣. Pouca coisa conecta, então aposte <b>pequeno (⅓ do pote)</b>, e com frequência.</li><li><b>Molhado:</b> tem 2+ do mesmo naipe ou cartas próximas (diferença até 2, tipo 9-8 ou 9-7). Ex.: J♥ 10♥ 8♣. Muitos draws, então aposte <b>grande (⅔ do pote)</b> e só com mão ou draw bom.</li></ul>
+   <div class="decore"><b>Decore</b>Seco → pequeno e muitas vezes. Molhado → grande e menos vezes.</div>` },
+ { id: "blefe", stage: "Depois do flop", title: "Blefe e defesa", sub: "quanto ele precisa largar",
+   lesson: `<p>Dois números que todo jogador de cash sabe de cabeça:</p>
+   <h4>1. Seu blefe: quantas vezes ele precisa largar</h4><p class="ex">aposta ÷ (pote + aposta)<br>Blefe de metade do pote → precisa de <b>33%</b> de fold</p>
+   <h4>2. Sua defesa (MDF): quanto do seu range continua</h4><p class="ex">pote ÷ (pote + aposta)<br>Ele aposta metade do pote → continue com <b>67%</b> das suas mãos</p>
+   <div class="tablewrap"><table><tr><th>Aposta</th><th>Blefe precisa de fold</th><th>Defenda (MDF)</th></tr><tr><td>⅓ do pote</td><td><b>25%</b></td><td><b>75%</b></td></tr><tr><td>metade</td><td><b>33%</b></td><td><b>67%</b></td></tr><tr><td>⅔</td><td><b>40%</b></td><td><b>60%</b></td></tr><tr><td>pote</td><td><b>50%</b></td><td><b>50%</b></td></tr></table></div>
+   <div class="decore"><b>Ao vivo</b>Jogadores de cash ao vivo blefam menos do que deveriam. Contra apostas grandes de jogador passivo, largue mais que o MDF.</div>` },
+ { id: "spr", stage: "Depois do flop", title: "SPR: quando ir all-in", sub: "stack dividido pelo pote",
+   lesson: `<p><b>SPR</b> = stack efetivo ÷ pote no flop. Diz quão comprometido você está.</p>
+   <p class="ex">Stack R$ 120, pote R$ 40 → SPR = <b>3</b></p>
+   <ul><li><b>SPR até 3:</b> top pair bom já vale ir all-in.</li><li><b>SPR 4 a 8:</b> precisa de dois pares ou mais pra colocar tudo.</li><li><b>SPR acima de 10:</b> só mão muito forte (trinca, sequência, flush) vai all-in. Top pair controla o pote.</li></ul>
+   <div class="decore"><b>Decore</b>Pote grande e stack curto = top pair vai. Stack fundo = top pair é mão de pote pequeno.</div>` },
+ { id: "tipos", stage: "Mesa ao vivo", title: "Leitura de jogadores", sub: "como explorar cada tipo",
+   lesson: `<div class="tablewrap"><table><tr><th>Tipo</th><th>Como joga</th><th>Como explorar</th></tr>
+   <tr><td><b>Calling station</b></td><td>paga tudo, quase não aumenta</td><td>aposte valor maior e mais vezes; quase nunca blefe</td></tr>
+   <tr><td><b>Nit</b></td><td>só joga mão forte</td><td>roube os blinds dele; quando ele aumentar forte, largue</td></tr>
+   <tr><td><b>Maníaco</b></td><td>aposta e aumenta tudo</td><td>pague mais com mãos médias e deixe ele blefar</td></tr>
+   <tr><td><b>Regular</b></td><td>joga certinho</td><td>evite pote grande sem mão; ganhe dos outros</td></tr></table></div>
+   <h4>Sinais confiáveis</h4><ul><li>Como ele jogou as mãos que foram mostradas no showdown.</li><li>Tamanho de aposta que muda com a força (ex.: aposta grande só com mão).</li><li>Muito limp-call pré-flop = jogador recreativo.</li></ul>
+   <div class="decore"><b>Decore</b>Contra quem paga demais: valor. Contra quem larga demais: blefe.</div>` },
+ { id: "mente", stage: "Mesa ao vivo", title: "Bankroll e mental", sub: "o que separa quem dura de quem quebra",
+   lesson: `<ul><li><b>Bankroll:</b> tenha 20 a 30 buy-ins do nível que você joga. Blinds 1/2 com buy-in de R$ 200 → R$ 4.000 a R$ 6.000.</li><li><b>Stop-loss:</b> perdeu 3 buy-ins na sessão? Pare. Tilt custa mais que qualquer mão.</li><li><b>Variância:</b> mesmo jogando certo, dá pra perder por semanas. Avalie a decisão, não o resultado.</li><li><b>Subir de nível:</b> só com bankroll pro nível novo e resultado consistente no atual.</li><li><b>Revisão:</b> anote 2 ou 3 mãos difíceis por sessão e revise com calma.</li></ul>
+   <div class="decore"><b>Decore</b>Decisão boa com resultado ruim continua sendo decisão boa.</div>` }
+];
+const STATIC = {
+  tipos: [
+    ["Jogador que paga quase tudo e quase nunca aumenta (calling station). Qual o melhor plano?", "Apostar por valor mais vezes e maior", ["Blefar bastante", "Dar check pra induzir", "Jogar mais mãos fracas"]],
+    ["Um nit (super apertado) aumenta no river pela primeira vez na sessão. O que ele costuma ter?", "Mão muito forte", ["Blefe", "Par médio", "Draw que errou"]],
+    ["Contra um maníaco que aposta toda rua, o ajuste é:", "Pagar mais com mãos médias", ["Largar tudo que não for nuts", "Blefar de volta sempre", "Jogar só AA e KK"]],
+    ["Contra quem larga muito pra c-bet, você deve:", "Fazer c-bet com mais frequência", ["Nunca fazer c-bet", "Só apostar com top pair", "Dar check e largar"]],
+    ["O sinal mais confiável pra ler alguém ao vivo é:", "Como ele jogou as mãos mostradas no showdown", ["Se a mão dele treme", "Se ele está conversando", "A roupa que ele usa"]],
+    ["Muitos limp-call pré-flop geralmente indicam:", "Jogador recreativo", ["Profissional", "Nit", "Maníaco"]],
+    ["Contra um nit, roubar os blinds dele é:", "Lucrativo, ele larga muito", ["Perda de tempo", "Proibido", "Só com AA"]],
+    ["Mesa com muitos limpers passivos. Com mão boa você:", "Aumenta maior (+1 big por limper)", ["Só paga o blind também", "Larga", "Vai all-in sempre"]]
+  ],
+  mente: [
+    ["Bankroll recomendado pra cash ao vivo:", "20 a 30 buy-ins do nível", ["2 a 3 buy-ins", "5 buy-ins", "100 buy-ins"]],
+    ["Você perdeu 3 buy-ins e está irritado. Melhor decisão:", "Parar a sessão", ["Subir de nível pra recuperar", "Jogar mais solto", "Fazer recompra dobrada"]],
+    ["Você pagou certo com 40% de equity e perdeu. Foi:", "Uma boa decisão", ["Um erro", "Azar que prova que pagar é ruim", "Sinal pra largar mais"]],
+    ["Variância significa que:", "Mesmo jogando certo dá pra perder por semanas", ["Quem joga certo nunca perde", "Sorte não existe no cash", "Só torneio tem variância"]],
+    ["Quando subir de nível?", "Com bankroll pro nível novo e resultado consistente", ["Depois de uma noite boa", "Quando estiver perdendo", "Assim que entender pot odds"]],
+    ["Tilt é:", "Jogar pior por emoção", ["Um tipo de blefe", "Aposta mínima", "Estratégia avançada"]],
+    ["Anotar mãos depois da sessão serve pra:", "Revisar decisões difíceis com calma", ["Reclamar das bad beats", "Contar quanto ganhou", "Nada"]]
+  ]
+};
+const CARDS = [
+  ["odds", "Aposta de ⅓ do pote: quanto preciso pra pagar?", "20%"], ["odds", "Aposta de metade do pote: quanto preciso?", "25%"], ["odds", "Aposta de ⅔ do pote: quanto preciso?", "~29% (quase 30%)"], ["odds", "Aposta do tamanho do pote: quanto preciso?", "33%"], ["odds", "Aposta de 2x o pote: quanto preciso?", "40%"], ["odds", "Fórmula de pot odds", "aposta ÷ (pote + 2 × aposta)"],
+  ["outs", "Outs de um flush draw", "9"], ["outs", "Outs de uma sequência aberta (8-9-10-J)", "8"], ["outs", "Outs de um gutshot", "4"], ["outs", "Outs de duas cartas maiores que a mesa", "6"], ["outs", "Flush draw + sequência aberta", "15 outs"], ["outs", "Outs → % com uma carta por vir", "outs × 2"], ["outs", "Outs → % com duas cartas por vir (all-in no flop)", "outs × 4"],
+  ["draw", "Flush draw contra aposta de metade do pote, uma carta por vir", "Fold pela conta: 18% < 25%"], ["draw", "O que são implied odds?", "Fichas que você ainda ganha quando acerta; deixam pagar um pouco abaixo da conta"],
+  ["blefe", "Blefe de metade do pote: ele precisa largar quanto?", "33%"], ["blefe", "Blefe do tamanho do pote: ele precisa largar quanto?", "50%"], ["blefe", "MDF contra aposta de metade do pote", "Defenda 67% das mãos"], ["blefe", "MDF contra aposta do tamanho do pote", "Defenda 50% das mãos"],
+  ["spr", "SPR até 3 com top pair", "Pode ir all-in"], ["spr", "SPR acima de 10 com top pair", "Controle o pote; all-in só com mão muito forte"], ["spr", "Fórmula do SPR", "stack efetivo ÷ pote"],
+  ["pre", "Tamanho do open raise", "3 bigs + 1 big por limper"], ["pre", "Quanto o UTG abre numa mesa de 9?", "~11% (77+, ATs+, AJo+, KQo)"], ["pre", "Quanto o botão abre?", "~40% das mãos"], ["vsr", "Mãos de 3-bet por valor", "TT+, AQs+, AK"], ["vsr", "Contra aumento, o que pagar?", "Pares 22–99 e suited fortes (AJs, KQs, JTs…)"],
+  ["pos", "Quem fala por último depois do flop?", "O botão (BTN)"], ["pos", "Piores posições depois do flop", "SB e BB (falam primeiro)"],
+  ["tex", "Flop seco: c-bet de que tamanho?", "Pequeno: ⅓ do pote"], ["tex", "Flop molhado: c-bet de que tamanho?", "Grande: ⅔ do pote"],
+  ["fund", "Flush ou sequência: quem ganha?", "Flush"], ["fund", "Full house ou flush: quem ganha?", "Full house"],
+  ["tipos", "Contra calling station", "Valor grande, quase nunca blefe"], ["tipos", "Contra maníaco", "Pague mais com mão média"],
+  ["mente", "Bankroll pra cash", "20 a 30 buy-ins"], ["mente", "Stop-loss", "Perdeu 3 buy-ins? Pare a sessão"]
+].map((c, i) => ({ id: "c" + i, mod: c[0], front: c[1], back: c[2] }));
+
+/* ================= Geradores de perguntas ================= */
+const ACTS = { fold: "Fold", call: "Call", raise: "Raise", check: "Check" };
+function gFund(){
+  for (let t = 0; t < 50; t++){
+    const c = deal(9), h = c.slice(0, 2), v = c.slice(2, 4), b = c.slice(4);
+    const hs = evalCards([...h, ...b], 7), vs = evalCards([...v, ...b], 7);
+    if (hs === vs && Math.random() < 0.7) continue;
+    const right = hs > vs ? "Você" : hs < vs ? "Vilão" : "Empate";
+    return { rows: [["Você", h], ["Vilão", v], ["Mesa", b]], text: "Quem ganha?", opts: ["Você", "Vilão", "Empate"], right: [right],
+      why: `Você: <b>${describe(hs)}</b>. Vilão: <b>${describe(vs)}</b>. ${right === "Empate" ? "Mesma mão: divide o pote." : right === "Você" ? "Sua mão é maior." : "A dele é maior."}` };
+  }
+}
+function gPos(){
+  const n = P.set.players, po = POST_ORDER[n];
+  const [a, b] = shuffle(po.slice()).slice(0, 2), first = po.indexOf(a) < po.indexOf(b) ? a : b;
+  if (Math.random() < 0.5) return { rows: [], text: `Depois do flop, quem fala primeiro: <b>${a}</b> ou <b>${b}</b>?`, opts: [a, b], right: [first], why: `Ordem depois do flop: ${po.join(" → ")}. O botão é sempre o último.` };
+  const ip = first === b;
+  return { rows: [], text: `Você está no <b>${a}</b> e o vilão no <b>${b}</b>. Depois do flop você joga em posição (fala por último)?`, opts: ["Sim", "Não"], right: [ip ? "Sim" : "Não"], why: `Ordem depois do flop: ${po.join(" → ")}. ${ip ? `${a} fala depois de ${b}: em posição.` : `${a} fala antes de ${b}: fora de posição.`}` };
+}
+function playable(){ let h, c; for (let i = 0; i < 40; i++){ h = deal(2); c = handCode(h[0], h[1]); if (Math.random() < 0.4 || RB[2].has(c)) break; } return [h, c]; }
+function gPre(){
+  const n = P.set.players, ord = ORDER[n], pos = pick(ord.filter(p => p !== "BB")), [h, code] = playable();
+  const right = chartAction(code, "open", n, pos);
+  return { rows: [["Você", h]], text: `Mesa de ${n}, você no <b>${pos}</b>. Ninguém aumentou antes de você.`, opts: ["fold", "raise"], act: true, right: [right],
+    why: `${code} ${right === "raise" ? "está" : "não está"} no range de abertura do ${pos} (${pctI(rangePct(openSet(n, pos)))} das mãos). ${right === "raise" ? `Aumente pra ${money(3 * P.set.bb)}.` : "Largue."}`, chart: { code, mode: "open", n, pos } };
+}
+function gVsr(){
+  const n = P.set.players, ord = ORDER[n], pos = pick(ord.slice(1)), before = ord.slice(0, ord.indexOf(pos)), raiser = pick(before);
+  const [h, code] = playable(), size = chip(pick([2.5, 3, 3, 4]) * P.set.bb), right = chartAction(code, "vsraise", n, pos);
+  return { rows: [["Você", h]], text: `Mesa de ${n}, você no <b>${pos}</b>. O <b>${raiser}</b> aumentou para ${money(size)}.`, opts: ["fold", "call", "raise"], act: true, right: [right],
+    why: right === "raise" ? `${code} está entre as melhores (TT+, AQs+, AK): 3-bet pra ~${money(3 * size)}.` : right === "call" ? `${code} joga bem mas não pra 3-bet: pague ${money(size)}.` : `Contra aumento, ${code} perde dinheiro. Largue.`, chart: { code, mode: "vsraise", n, pos } };
+}
+function gOdds(){
+  const Pt = chip(pick([10, 15, 20, 25, 30, 40, 50, 60, 80, 100, 150]) * P.set.bb / 2), fr = pick(BET_SIZES), B = chip(Pt * fr[0]);
+  const right = Math.round(B / (Pt + 2 * B) * 100);
+  return { rows: [], text: `Pote <b>${money(Pt)}</b>. O vilão aposta <b>${money(B)}</b> (${fr[1]}). Pra pagar, você precisa ganhar quantos % das vezes?`,
+    opts: numOpts(right, [14, 17, 20, 23, 25, 27, 29, 30, 33, 36, 38, 40, 43, 45, 50].filter(x => Math.abs(x - right) >= 3), 4, x => x + "%"), right: [right + "%"],
+    why: `${money(B)} ÷ (${money(Pt)} + 2 × ${money(B)}) = ${right}%. Atalho: ${fr[1]} → ${right}%.` };
+}
+function drawSpot(){
+  for (let i = 0; i < 500; i++){
+    const nb = Math.random() < 0.75 ? 3 : 4, c = deal(2 + nb), h = c.slice(0, 2), b = c.slice(2), o = computeOuts(h, b);
+    if (o.n >= 4 && o.n <= 15 && o.cur <= 1) return { h, b, o, nb };
+  }
+}
+function gOuts(){
+  const { h, b, o, nb } = drawSpot(), by = {};
+  o.list.forEach(x => by[x.cat] = (by[x.cat] || 0) + 1);
+  const parts = Object.keys(by).sort((a, b2) => b2 - a).map(k => `${CAT[k]}: ${by[k]}`).join(" · ");
+  if (Math.random() < 0.35){
+    const mult = nb === 3 ? 4 : 2, right = o.n * mult;
+    return { rows: [["Você", h], ["Mesa", b]], text: `Você tem <b>${o.n} outs</b> ${nb === 3 ? "no flop e está all-in (2 cartas por vir)" : "no turn (1 carta por vir)"}. Chance aproximada de acertar?`,
+      opts: numOpts(right, [right - 8, right - 4, right + 4, right + 8, right - 2, right + 2].filter(x => x > 0), 4, x => x + "%"), right: [right + "%"], why: `${o.n} × ${mult} = ${right}% (exato ${pctI(o.prob)}).` };
+  }
+  return { rows: [["Você", h], ["Mesa", b]], text: "Quantas cartas (outs) melhoram a sua mão?", opts: numOpts(o.n, [o.n - 4, o.n - 2, o.n - 1, o.n + 1, o.n + 2, o.n + 4].filter(x => x > 0), 4, String), right: [String(o.n)],
+    why: `${o.n} outs (${parts}).<div class="mini" style="margin-top:6px">${o.list.map(x => miniCard(x.c)).join("")}</div>` };
+}
+function gDraw(){
+  for (let t = 0; t < 80; t++){
+    const s = drawSpot(); if (!s) break;
+    const { h, b, o } = s, Pt = chip(pick([10, 16, 20, 30, 40, 60]) * P.set.bb / 2), fr = pick(BET_SIZES.slice(0, 5)), B = chip(Pt * fr[0]);
+    const need = B / (Pt + 2 * B), eq = o.next;
+    if (Math.abs(eq - need) < 0.03) continue;
+    const right = eq >= need ? "call" : "fold";
+    return { rows: [["Você", h], ["Mesa", b]], text: `Pote <b>${money(Pt)}</b>. O vilão aposta <b>${money(B)}</b> (${fr[1]}). Ainda vem ${b.length === 3 ? "o turn e haverá mais apostas" : "o river"}. Pela conta, você paga?`, opts: ["fold", "call"], act: true, right: [right],
+      why: `${o.n} outs × 2 ≈ <b>${o.n * 2}%</b> (exato ${pctI(eq)}). Precisa de <b>${pctI(need)}</b>. ${right === "call" ? "Dá lucro pagar." : "Pela conta, largue (só pague com implied odds boas)."}` };
+  }
+  return gOdds();
+}
+function isWet(b){
+  const sc = [0, 0, 0, 0]; b.forEach(c => sc[c & 3]++);
+  if (Math.max(...sc) >= 2) return true;
+  const r = [...new Set(b.map(c => c >> 2))]; const ext = r.includes(12) ? [...r, -1] : r;
+  for (let i = 0; i < ext.length; i++) for (let j = i + 1; j < ext.length; j++) if (Math.abs(ext[i] - ext[j]) <= 2) return true;
+  return false;
+}
+function gTex(){
+  const wantWet = Math.random() < 0.5; let b;
+  for (let i = 0; i < 300; i++){ b = deal(3); if (isWet(b) === wantWet) break; }
+  const wet = isWet(b);
+  const sc = [0, 0, 0, 0]; b.forEach(c => sc[c & 3]++);
+  const reason = wet ? (Math.max(...sc) >= 2 ? "tem 2+ cartas do mesmo naipe (flush draw possível)" : "tem cartas próximas (sequência possível)") : "naipes diferentes e cartas longe uma da outra";
+  if (Math.random() < 0.5) return { rows: [["Mesa", b]], text: "Esse flop é seco ou molhado?", opts: ["Seco", "Molhado"], right: [wet ? "Molhado" : "Seco"], why: `${wet ? "Molhado" : "Seco"}: ${reason}.` };
+  return { rows: [["Mesa", b]], text: "Você aumentou antes do flop e vai fazer c-bet. Tamanho?", opts: ["Pequeno (⅓)", "Grande (⅔)"], right: [wet ? "Grande (⅔)" : "Pequeno (⅓)"], why: `Flop ${wet ? "molhado" : "seco"} (${reason}) → ${wet ? "aposta grande, ⅔ do pote" : "aposta pequena, ⅓ do pote"}.` };
+}
+function gBlefe(){
+  const Pt = chip(pick([20, 30, 40, 60, 80, 100]) * P.set.bb / 2), fr = pick(BET_SIZES.slice(0, 5)), B = chip(Pt * fr[0]);
+  if (Math.random() < 0.5){
+    const right = Math.round(B / (Pt + B) * 100);
+    return { rows: [], text: `Você blefa <b>${money(B)}</b> num pote de <b>${money(Pt)}</b> (${fr[1]}). Ele precisa largar quantos % das vezes pra o blefe dar lucro?`, opts: numOpts(right, [20, 25, 29, 33, 36, 40, 43, 50, 55, 60].filter(x => Math.abs(x - right) >= 3), 4, x => x + "%"), right: [right + "%"], why: `aposta ÷ (pote + aposta) = ${money(B)} ÷ ${money(Pt + B)} = ${right}%.` };
+  }
+  const right = Math.round(Pt / (Pt + B) * 100);
+  return { rows: [], text: `O vilão aposta <b>${money(B)}</b> num pote de <b>${money(Pt)}</b> (${fr[1]}). Quantos % das suas mãos você precisa continuar (MDF)?`, opts: numOpts(right, [40, 45, 50, 55, 60, 64, 67, 71, 75, 80].filter(x => Math.abs(x - right) >= 3), 4, x => x + "%"), right: [right + "%"], why: `pote ÷ (pote + aposta) = ${money(Pt)} ÷ ${money(Pt + B)} = ${right}%. Contra jogador passivo ao vivo, pode largar mais que isso.` };
+}
+function gSpr(){
+  if (Math.random() < 0.5){
+    const spr = pick([1, 1.5, 2, 2.5, 3, 7, 8, 10, 12, 15]), Pt = chip(pick([10, 15, 20, 30]) * P.set.bb), St = chip(Pt * spr);
+    const right = spr <= 3 ? "Sim" : "Não";
+    return { rows: [], text: `Você tem top pair com bom kicker. Stack efetivo <b>${money(St)}</b>, pote <b>${money(Pt)}</b>. Topa colocar tudo (all-in)?`, opts: ["Sim", "Não"], right: [right], why: `SPR = ${money(St)} ÷ ${money(Pt)} ≈ ${(+(St / Pt).toFixed(1)).toLocaleString("pt-BR")}. ${spr <= 3 ? "SPR baixo: top pair vai all-in." : "SPR alto: top pair controla o pote; all-in só com mão muito forte."}` };
+  }
+  const Pt = chip(pick([10, 15, 20, 25, 30, 40]) * P.set.bb), k = pick([1, 2, 3, 4, 5, 6, 8, 10]), St = Pt * k;
+  return { rows: [], text: `Stack efetivo <b>${money(St)}</b>, pote no flop <b>${money(Pt)}</b>. Qual o SPR?`, opts: numOpts(k, [1, 2, 3, 4, 5, 6, 8, 10, 12, 15], 4, String), right: [String(k)], why: `SPR = stack ÷ pote = ${money(St)} ÷ ${money(Pt)} = ${k}.` };
+}
+function gStatic(id){
+  const [q, r, ws] = pick(STATIC[id]);
+  return { rows: [], text: q, opts: shuffle([r, ...ws]), one: true, right: [r], why: (MODS.find(m => m.id === id).lesson.match(/<div class="decore">([\s\S]*?)<\/div>/) || ["", ""])[1].replace(/<b>[^<]*<\/b>/, "").trim() };
+}
+const GEN = { fund: gFund, pos: gPos, pre: gPre, vsr: gVsr, odds: gOdds, outs: gOuts, draw: gDraw, tex: gTex, blefe: gBlefe, spr: gSpr, tipos: () => gStatic("tipos"), mente: () => gStatic("mente") };
+
+/* ================= Estado da tela ================= */
+const V = { tab: "hoje", mod: null, run: null, review: null, showChart: false, showAll: false };
+let timerI = null;
+function startRun(mods, title, n = 10){ V.run = { mods, title, n, i: 0, res: [], q: null, ans: null, xp: 0 }; nextQ(); }
+function dailyMods(){
+  const seen = MODS.filter(m => (P.read[m.id] || modStat(m.id).n > 0) && m.id !== "fund" && m.id !== "pos");
+  if (!seen.length) return ["pre", "vsr", "odds", "draw", "blefe"];
+  const w = []; seen.forEach(m => { const k = Math.round((1.2 - modAcc(m.id)) * 5) + (mastered(m.id) ? 0 : 2); for (let i = 0; i < k; i++) w.push(m.id); });
+  return w;
+}
+function nextQ(){
+  const r = V.run; r.q = GEN[pick(r.mods)](); r.q.mod = r.q.mod || null;
+  r.q.modId = r.mods.length === 1 ? r.mods[0] : null;
+  r.ans = null; r.t0 = performance.now(); V.showChart = false;
+  if (!r.q.modId){ const mid = Object.keys(GEN).find(k => GEN[k] === GEN[k]); }
+}
+function answer(a){
+  const r = V.run; if (!r || r.ans) return;
+  clearInterval(timerI);
+  const time = (performance.now() - r.t0) / 1000, ok = a != null && r.q.right.includes(a);
+  r.ans = { a, ok, time }; r.res.push(ok);
+  const mid = r.q.src;
+  const m = P.mods[mid] || (P.mods[mid] = { n: 0, ok: 0, recent: [], time: 0 });
+  m.n++; if (ok){ m.ok++; m.time += time; } m.recent.push(ok ? 1 : 0); if (m.recent.length > 20) m.recent.shift();
+  const gain = ok ? 10 + (P.set.timer && time < P.set.timer / 2 ? 5 : 0) : 2;
+  P.xp += gain; r.xp += gain;
+  const d = today(); P.days[d] = (P.days[d] || 0) + 1;
+  persist(); render();
+}
+function tickTimer(){
+  clearInterval(timerI);
+  const r = V.run; if (!r || r.ans || !P.set.timer) return;
+  timerI = setInterval(() => {
+    const el = document.getElementById("tbar"), lt = document.getElementById("tleft");
+    if (!el || !V.run || V.run.ans){ clearInterval(timerI); return; }
+    const rem = Math.max(0, P.set.timer - (performance.now() - V.run.t0) / 1000);
+    el.style.width = (rem / P.set.timer * 100) + "%"; el.classList.toggle("low", rem < 3); if (lt) lt.textContent = Math.ceil(rem) + "s";
+    if (rem <= 0) answer(null);
+  }, 100);
+}
+function dueCards(){ const d = today(); return CARDS.filter(c => { const s = P.cards[c.id]; return !s || s.due <= d; }); }
+
+/* ================= Render ================= */
+const $ = id => document.getElementById(id);
+function chartHTML(ch){
+  let g = "";
+  for (let i = 0; i < 13; i++) for (let j = 0; j < 13; j++){
+    const a = 12 - i, b = 12 - j, c = i === j ? RANKS[a] + RANKS[a] : i < j ? RANKS[a] + RANKS[b] + "s" : RANKS[b] + RANKS[a] + "o";
+    g += `<div class="rc ${chartAction(c, ch.mode, ch.n, ch.pos)} ${c === ch.code ? "me" : ""}">${c}</div>`;
+  }
+  return `<div class="range-wrap"><div class="range">${g}</div></div>`;
+}
+function render(){
+  document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.t === V.tab && !V.run && !V.review ? "page" : "false"));
+  const M = $("main");
+  if (V.run) return renderRun(M);
+  if (V.review) return renderReview(M);
+  if (V.mod) return renderLesson(M);
+  if (V.tab === "jogar") return renderHand(M);
+  if (V.tab === "trilha") return renderTrilha(M);
+  if (V.tab === "cartoes") return renderCards(M);
+  renderHoje(M);
+}
+function nextModule(){ return MODS.find(m => !mastered(m.id)) || MODS[MODS.length - 1]; }
+function renderHoje(M){
+  const li = level(), cur = LEVELS[li], nxt = LEVELS[li + 1];
+  const prog = nxt ? (P.xp - cur[0]) / (nxt[0] - cur[0]) : 1, d = today(), done = P.days[d] || 0, goal = 30;
+  const nm = nextModule(), due = dueCards().length;
+  const weak = MODS.filter(m => modStat(m.id).recent.length >= 5).sort((a, b) => modAcc(a.id) - modAcc(b.id)).slice(0, 3);
+  M.innerHTML = `
+    <section class="card"><div class="level"><div class="medal">${li + 1}</div><div style="flex:1;min-width:0"><div class="lvname">${cur[1]}</div>
+      <div class="help">${P.xp} XP${nxt ? ` · faltam ${nxt[0] - P.xp} pra ${nxt[1]}` : " · nível máximo"}</div><div class="bar"><span style="width:${Math.min(100, prog * 100).toFixed(1)}%"></span></div></div></div>
+      <div class="stats3"><div class="stat"><b>${streak()}</b><small>dias seguidos</small></div><div class="stat"><b>${Math.min(done, goal)}/${goal}</b><small>meta de hoje</small></div><div class="stat"><b>${MODS.filter(m => mastered(m.id)).length}/${MODS.length}</b><small>temas dominados</small></div></div></section>
+    <section class="card"><h3>Hoje</h3>
+      <button type="button" class="big gold" data-act="hnew">♠&#xFE0E; Jogar uma mão <small>do pré-flop ao river, com correção</small></button>
+      <button type="button" class="big alt" data-act="daily">▶ Exercícios rápidos <small>10 contas e spots, foco no que você erra</small></button>
+      <button type="button" class="big alt" data-act="cards">🂠&#xFE0E; Revisar cartões <small>${due} pra hoje</small></button>
+      <button type="button" class="big alt" data-act="open" data-m="${nm.id}">Próxima lição: ${nm.title}</button></section>
+    ${weak.length ? `<section class="card"><h3>Onde você mais erra</h3><ul class="weak">${weak.map(m => `<li><span>${m.title}</span><b>${pctI(modAcc(m.id))}</b></li>`).join("")}</ul><button type="button" class="big alt" data-act="practice" data-m="${weak[0].id}">Treinar ${weak[0].title}</button></section>` : ""}
+    <section class="card"><h3>Ajustes</h3>
+      <div class="setrow"><span>Cronômetro</span><div class="chips" style="margin:0">${[[0, "Sem"], [20, "20s"], [15, "15s"], [10, "10s"]].map(([v, l]) => `<button type="button" class="chip ${P.set.timer === v ? "sel" : ""}" data-act="set" data-k="timer" data-v="${v}">${l}</button>`).join("")}</div></div>
+      <div class="setrow"><span>Mesa</span><div class="chips" style="margin:0">${[6, 9].map(v => `<button type="button" class="chip ${P.set.players === v ? "sel" : ""}" data-act="set" data-k="players" data-v="${v}">${v} jogadores</button>`).join("")}</div></div>
+      <div class="setrow"><span>Big blind</span><div class="chips" style="margin:0">${[2, 5, 10].map(v => `<button type="button" class="chip ${P.set.bb === v ? "sel" : ""}" data-act="set" data-k="bb" data-v="${v}">${money(v)}</button>`).join("")}</div></div>
+      <p class="help" style="margin-top:12px">Comece sem cronômetro. Quando passar de 80% num tema, desça pra 15s e depois 10s.</p></section>`;
+}
+function renderTrilha(M){
+  let h = `<section style="margin-top:6px"><h2>A trilha</h2><p class="help">Faça na ordem. Um tema fica <b>dominado ★</b> com 85% de acerto nas últimas 20 perguntas.</p>`;
+  let stage = "", nm = nextModule();
+  h += `<ul class="mods">`;
+  MODS.forEach((m, i) => {
+    if (m.stage !== stage){ stage = m.stage; h += `</ul><div class="stage">${stage}</div><ul class="mods">`; }
+    const st = modStat(m.id), ms = mastered(m.id);
+    h += `<li><button type="button" class="mod ${ms ? "done" : ""} ${m === nm ? "next" : ""}" data-act="open" data-m="${m.id}"><span class="num">${ms ? "★" : i + 1}</span><span><span class="tt">${m.title}</span><br><span class="st">${st.n ? `${st.n} respondidas` : m.sub}</span></span><span class="pc">${st.recent.length ? pctI(modAcc(m.id)) : ""}</span></button></li>`;
+  });
+  M.innerHTML = h + `</ul></section>`;
+}
+function renderLesson(M){
+  const m = MODS.find(x => x.id === V.mod), i = MODS.indexOf(m), cards = CARDS.filter(c => c.mod === m.id);
+  M.innerHTML = `<section class="card lesson"><button type="button" class="back" data-act="back">← Trilha</button>
+    <div class="tag">${m.stage} · lição ${i + 1} de ${MODS.length}</div><h2 style="margin-top:6px">${m.title}</h2>${m.lesson}
+    <button type="button" class="big gold" data-act="practice" data-m="${m.id}">▶ Praticar (10 perguntas)</button>
+    ${cards.length ? `<button type="button" class="big alt" data-act="cards" data-m="${m.id}">Cartões deste tema (${cards.length})</button>` : ""}
+    ${MODS[i + 1] ? `<button type="button" class="big alt" data-act="open" data-m="${MODS[i + 1].id}">Próxima: ${MODS[i + 1].title} →</button>` : ""}</section>`;
+  if (!P.read[m.id]){ P.read[m.id] = true; persist(); }
+  window.scrollTo({ top: 0 });
+}
+function renderRun(M){
+  const r = V.run, q = r.q, a = r.ans;
+  if (r.i >= r.n){
+    const ok = r.res.filter(Boolean).length;
+    M.innerHTML = `<section class="card summary"><div class="tag">${r.title}</div><div class="score">${ok}/${r.n}</div><p>${ok >= 9 ? "Excelente. Hora de apertar o cronômetro." : ok >= 7 ? "Bom. Mais uma rodada fixa isso." : "Releia a lição e tente de novo: a repetição é o que faz decorar."}</p><p class="help">+${r.xp} XP</p>
+      <button type="button" class="big gold" data-act="again">Mais 10</button><button type="button" class="big alt" data-act="exit">Voltar</button></section>`;
+    return;
+  }
+  const opt = o => q.act ? ACTS[o] : o;
+  let h = `<section class="card"><div class="qhead"><button type="button" class="back" data-act="exit">✕ Sair</button><span class="prog">${r.i + 1}/${r.n}</span></div>
+    <div class="dots">${Array.from({ length: r.n }, (_, k) => `<i class="${k < r.res.length ? (r.res[k] ? "ok" : "bad") : k === r.i ? "cur" : ""}"></i>`).join("")}</div>
+    <div class="tag">${MODS.find(m => m.id === q.src).title}</div>`;
+  if (q.rows.length) h += `<div class="felt">${q.rows.map(([lb, cs]) => `<div class="frow"><span class="lb">${lb}</span>${cs.map(c => cardHTML(c, lb === "Mesa")).join("")}</div>`).join("")}</div>`;
+  h += `<p class="qtext">${q.text}</p>`;
+  if (P.set.timer && !a) h += `<div class="timer"><span id="tbar" style="width:100%"></span></div><div class="tleft" id="tleft">${P.set.timer}s</div>`;
+  h += `<div class="opts ${q.one ? "one" : q.opts.length === 3 ? "three" : ""}">${q.opts.map(o => {
+    let cls = "opt" + (q.act ? " act a-" + o : "");
+    if (a) cls += q.right.includes(o) ? " right" : a.a === o ? " wrong" : " dim";
+    return `<button type="button" class="${cls}" data-act="ans" data-k="${String(o).replace(/"/g, "&quot;")}" ${a ? "disabled" : ""}>${opt(o)}</button>`;
+  }).join("")}</div>`;
+  if (a){
+    h += `<div class="fb ${a.ok ? "ok" : "bad"}"><b>${a.ok ? "✓ Certo" : a.a == null ? "⏱ Tempo esgotado" : "✗ Errado"}</b>${a.ok ? ` · ${a.time.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}s` : ` · resposta: ${q.right.map(opt).join(" ou ")}`}<p>${q.why}</p></div>`;
+    if (q.chart){ h += `<button type="button" class="linkbtn" data-act="chart">${V.showChart ? "▾" : "▸"} Ver a tabela do ${q.chart.pos}</button>${V.showChart ? chartHTML(q.chart) : ""}`; }
+    h += `<button type="button" class="big" data-act="next" id="nextbtn">${r.i + 1 < r.n ? "Próxima →" : "Ver resultado"}</button>`;
+  }
+  M.innerHTML = h + `</section>`;
+  if (!a) tickTimer(); else requestAnimationFrame(() => { const n = $("nextbtn"); if (n) n.scrollIntoView({ behavior: "smooth", block: "nearest" }); });
+}
+function renderCards(M){
+  const due = dueCards(), boxes = [0, 0, 0, 0, 0, 0];
+  CARDS.forEach(c => { const s = P.cards[c.id]; boxes[s ? s.box : 0]++; });
+  M.innerHTML = `<section class="card"><h2>Cartões</h2><p class="help">Repetição espaçada: o que você sabe aparece cada vez menos; o que erra volta amanhã.</p>
+    <div class="boxes">${boxes.map((n, i) => `<div><b>${n}</b><small>${["novo", "1 dia", "3 dias", "7 dias", "14 dias", "30 dias"][i]}</small></div>`).join("")}</div>
+    <button type="button" class="big gold" data-act="cards" ${due.length ? "" : "disabled"}>${due.length ? `Revisar ${due.length} cartões` : "Nada pra hoje ✓"}</button>
+    <button type="button" class="linkbtn" data-act="showall">${V.showAll ? "▾" : "▸"} Ver todos os cartões</button>
+    ${V.showAll ? `<ul class="cardlist">${CARDS.map(c => `<li><span>${c.front}</span><b>${c.back}</b></li>`).join("")}</ul>` : ""}</section>`;
+}
+function renderReview(M){
+  const rv = V.review;
+  if (rv.i >= rv.list.length){
+    M.innerHTML = `<section class="card summary"><div class="tag">Cartões</div><div class="score">${rv.ok}/${rv.list.length}</div><p>Feito por hoje. Os que você errou voltam amanhã.</p><button type="button" class="big" data-act="exit">Voltar</button></section>`;
+    return;
+  }
+  const c = rv.list[rv.i], m = MODS.find(x => x.id === c.mod);
+  M.innerHTML = `<section class="card"><div class="qhead"><button type="button" class="back" data-act="exit">✕ Sair</button><span class="prog">${rv.i + 1}/${rv.list.length}</span></div>
+    <div class="flash" data-act="flip"><div class="topic">${m ? m.title : ""}</div><div class="front">${c.front}</div>${rv.show ? `<div class="backtxt">${c.back}</div>` : `<div class="help" style="color:var(--felt-muted);margin-top:14px">Pense na resposta e toque pra ver</div>`}</div>
+    ${rv.show ? `<div class="opts" style="margin-top:12px"><button type="button" class="opt" style="border-color:var(--bad);color:var(--bad)" data-act="rate" data-k="0">Errei</button><button type="button" class="opt" style="border-color:var(--good);color:var(--good)" data-act="rate" data-k="1">Sabia</button></div>` : `<button type="button" class="big" data-act="flip">Mostrar resposta</button>`}</section>`;
+}
+
+/* ================= Eventos ================= */
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b || b.disabled) return;
+  const act = b.dataset.act;
+  switch (act){
+    case "tab": V.tab = b.dataset.t; V.mod = null; V.run = null; V.review = null; clearInterval(timerI); window.scrollTo({ top: 0 }); break;
+    case "open": V.mod = b.dataset.m; V.tab = "trilha"; break;
+    case "back": V.mod = null; break;
+    case "practice": { const id = b.dataset.m; startRun([id], MODS.find(m => m.id === id).title); window.scrollTo({ top: 0 }); break; }
+    case "daily": startRun(dailyMods(), "Treino do dia"); window.scrollTo({ top: 0 }); break;
+    case "again": startRun(V.run.mods, V.run.title); break;
+    case "ans": answer(b.dataset.k); return;
+    case "next": V.run.i++; if (V.run.i < V.run.n) nextQ(); window.scrollTo({ top: 0, behavior: "smooth" }); break;
+    case "chart": V.showChart = !V.showChart; break;
+    case "exit": V.run = null; V.review = null; clearInterval(timerI); break;
+    case "set": P.set[b.dataset.k] = +b.dataset.v; persist(); break;
+    case "cards": { const mid = b.dataset.m; const list = mid ? CARDS.filter(c => c.mod === mid) : dueCards(); if (!list.length) return; V.review = { list: shuffle(list.slice()).slice(0, 20), i: 0, show: false, ok: 0 }; window.scrollTo({ top: 0 }); break; }
+    case "flip": if (V.review) V.review.show = true; break;
+    case "rate": {
+      const rv = V.review, c = rv.list[rv.i], s = P.cards[c.id] || { box: 0, due: today() }, ok = b.dataset.k === "1";
+      s.box = ok ? Math.min(5, s.box + 1) : 0; s.due = addDays(today(), ok ? BOX_DAYS[s.box] : 1);
+      P.cards[c.id] = s; if (ok) rv.ok++; P.xp += 3; P.days[today()] = (P.days[today()] || 0) + 1; persist();
+      rv.i++; rv.show = false; break;
+    }
+    case "showall": V.showAll = !V.showAll; break;
+    default: return;
+  }
+  render();
+});
+// Liga cada pergunta ao seu módulo (para o placar)
+const _nextQ = nextQ;
+nextQ = function(){
+  const r = V.run, id = pick(r.mods);
+  r.q = GEN[id](); r.q.src = id; r.ans = null; r.t0 = performance.now(); V.showChart = false;
+};
+/* ================= JOGAR MÃOS (simulador heads-up) ================= */
+// ---------- Ranges ponderados (mesma lógica do Outs & Odds) ----------
+const ALL_COMBOS = [], COMBO_CODE = [];
+for (let a = 0; a < 52; a++) for (let b = a + 1; b < 52; b++){ ALL_COMBOS.push([a, b]); COMBO_CODE.push(handCode(a, b)); }
+const VS3_4BET = parseRange("QQ+, AKs, AKo"), VS3_CALL = parseRange("99, TT, JJ, AQs, AJs, KQs, AQo");
+const BASES = {
+  callopen: parseRange("99, 88, 77, 66, 55, 44, 33, 22, AJs, ATs, A9s, A5s, KQs, KJs, KTs, QJs, QTs, JTs, T9s, 98s, 87s, 76s, AQo, AJo, KQo"),
+  bbdef: BB_DEF,
+  "3bet": parseRange("TT+, AQs+, AKo, A5s-A4s, KQs"),
+  call3bet: parseRange("88, 99, TT, JJ, QQ, AJs, AQs, KQs, AQo, AKo"),
+  "4bet": parseRange("QQ+, AKs, AKo")
+};
+const baseSetH = (k, n) => k.startsWith("pos:") ? openSet(n, k.slice(4)) : BASES[k];
+function classify(a, b, board){
+  const n = board.length, cards = [a, b, ...board];
+  const s = evalCards(cards, 2 + n), cat = s >> 20, bcat = evalCards(board, n) >> 20;
+  let top = 0; for (const c of board) top = Math.max(top, c >> 2);
+  if (cat >= 2 && cat > bcat) return "monster";
+  if (cat === 1 && bcat === 0){ const pr = ((s >> 16) & 15) - 1; return pr >= top ? "top" : "pair"; }
+  if (n < 5){
+    let fd = false;
+    for (let su = 0; su < 4; su++){ let all = 0, bo = 0; for (const c of cards) if ((c & 3) === su) all++; for (const c of board) if ((c & 3) === su) bo++; if (all >= 4 && bo < 4 && ((a & 3) === su || (b & 3) === su)) fd = true; }
+    let mask = 0, bmask = 0; for (const c of cards) mask |= 1 << (c >> 2); for (const c of board) bmask |= 1 << (c >> 2);
+    let outs = 0, bouts = 0;
+    for (let r = 0; r < 13; r++){ if (!((mask >> r) & 1) && straightHigh(mask | (1 << r)) >= 0) outs++; if (!((bmask >> r) & 1) && straightHigh(bmask | (1 << r)) >= 0) bouts++; }
+    if (fd || outs - bouts >= 2) return "draw";
+    if (outs - bouts === 1 || ((a >> 2) > top && (b >> 2) > top)) return "weak";
+  }
+  return "air";
+}
+const NARROW = {
+  call:  { monster: 1, top: 1, pair: 0.9, draw: 0.9, weak: 0.35, air: 0.08 },
+  bet:   { monster: 1, top: 0.9, pair: 0.5, draw: 0.6, weak: 0.3, air: 0.15 },
+  raise: { monster: 1, top: 0.45, pair: 0.12, draw: 0.35, weak: 0.08, air: 0.03 },
+  check: { monster: 0.35, top: 0.6, pair: 1, draw: 0.8, weak: 1, air: 1 }
+};
+function mkRange(base, n){ const v = { base, n, hist: [], w: null }; recalcR(v); return v; }
+function recalcR(v){
+  const set = baseSetH(v.base, v.n), w = new Float64Array(ALL_COMBOS.length);
+  for (let i = 0; i < w.length; i++) w[i] = set.has(COMBO_CODE[i]) ? 1 : 0;
+  for (const h of v.hist){
+    const T = NARROW[h.t], dead = new Set(h.board);
+    for (let i = 0; i < w.length; i++){ if (!w[i]) continue; const [a, b] = ALL_COMBOS[i]; if (dead.has(a) || dead.has(b)) continue; w[i] *= T[classify(a, b, h.board)]; }
+  }
+  v.w = w;
+}
+function rAct(v, t, board){ v.hist.push({ t, board: board.slice() }); recalcR(v); }
+const BUCKETS = { monster: "Mão forte (dois pares+)", top: "Top pair / overpair", pair: "Par médio ou fraco", draw: "Draw forte", weak: "Cartas altas ou gutshot", air: "Nada (ar)" };
+function rangeInfo(v, hero, board){
+  const dead = new Set([...hero, ...board]); let tot = 0, all = 0; const b = {};
+  for (let i = 0; i < ALL_COMBOS.length; i++){
+    const [x, y] = ALL_COMBOS[i]; if (dead.has(x) || dead.has(y)) continue; all++;
+    const w = v.w[i]; if (!w) continue; tot += w;
+    const k = board.length >= 3 ? BUCKETS[classify(x, y, board)] : "—"; b[k] = (b[k] || 0) + w;
+  }
+  const parts = Object.entries(b).map(([k, w]) => [k, w / tot]).sort((p, q) => q[1] - p[1]);
+  return { share: tot / all, parts };
+}
+function equityVs(hero, board, v, iters = 5000){
+  const base = new Uint8Array(52); hero.forEach(c => base[c] = 1); board.forEach(c => base[c] = 1);
+  const idx = [], cum = []; let t = 0;
+  for (let i = 0; i < v.w.length; i++){ const w = v.w[i]; if (!w) continue; const [a, b] = ALL_COMBOS[i]; if (base[a] || base[b]) continue; t += w; idx.push(i); cum.push(t); }
+  if (!t) return 0.5;
+  const used = new Uint8Array(52), hb = new Int8Array(7), ob = new Int8Array(7), bl = board.length;
+  hb[0] = hero[0]; hb[1] = hero[1]; for (let i = 0; i < bl; i++){ hb[2 + i] = board[i]; ob[2 + i] = board[i]; }
+  let win = 0;
+  for (let it = 0; it < iters; it++){
+    used.set(base);
+    const r = Math.random() * t; let lo = 0, hi = cum.length - 1; while (lo < hi){ const m = (lo + hi) >> 1; if (cum[m] < r) lo = m + 1; else hi = m; }
+    const [a, b] = ALL_COMBOS[idx[lo]]; used[a] = used[b] = 1; ob[0] = a; ob[1] = b;
+    for (let i = bl; i < 5; i++){ let c; do { c = (Math.random() * 52) | 0; } while (used[c]); used[c] = 1; hb[2 + i] = c; ob[2 + i] = c; }
+    const hs = evalCards(hb, 7), vs = evalCards(ob, 7);
+    win += hs > vs ? 1 : hs === vs ? 0.5 : 0;
+  }
+  return win / iters;
+}
+function sampleFrom(v, dead){
+  const ds = new Set(dead), idx = [], cum = []; let t = 0;
+  for (let i = 0; i < v.w.length; i++){ const w = v.w[i]; if (!w) continue; const [a, b] = ALL_COMBOS[i]; if (ds.has(a) || ds.has(b)) continue; t += w; idx.push(i); cum.push(t); }
+  const r = Math.random() * t; let lo = 0; while (cum[lo] < r) lo++;
+  return ALL_COMBOS[idx[lo]].slice();
+}
+
+// ---------- Mão ----------
+let H = null;
+const SN = { pre: "Pré-flop", flop: "Flop", turn: "Turn", river: "River" };
+const nb = { pre: 0, flop: 3, turn: 4, river: 5 };
+const shown = () => H.board ? H.board.slice(0, nb[H.street]) : [];
+const heroIP = () => POST_ORDER[H.n].indexOf(H.heroPos) > POST_ORDER[H.n].indexOf(H.villPos);
+const potNow = () => r2h(H.pot + H.hIn + H.vIn);
+const r2h = x => Math.round(x * 100) / 100;
+const hLeft = () => r2h(H.hStack - H.hIn), vLeft = () => r2h(H.vStack - H.vIn);
+function wetBoard(b){ return b.length >= 3 && isWet(b.slice(0, 3)) || (b.length > 3 && (() => { const sc = [0, 0, 0, 0]; b.forEach(c => sc[c & 3]++); return Math.max(...sc) >= 3; })()); }
+function addLog(who, t){ H.log.push({ who, t, st: H.street }); }
+
+function newHand(){
+  const n = P.set.players, ord = ORDER[n], bb = P.set.bb, stack = 100 * bb;
+  const roll = Math.random(), type = roll < 0.45 ? "open" : roll < 0.85 ? "vsopen" : "bb";
+  let heroPos, villPos;
+  if (type === "open"){ heroPos = pick(ord.slice(0, ord.length - 1)); villPos = pick(ord.slice(ord.indexOf(heroPos) + 1)); }
+  else if (type === "bb"){ heroPos = "BB"; villPos = pick(["CO", "BTN", "SB"].filter(p => ord.includes(p))); }
+  else { heroPos = pick(ord.slice(1, ord.length - 1)); villPos = pick(ord.slice(0, ord.indexOf(heroPos))); }
+  let hero, code;
+  for (let i = 0; i < 60; i++){
+    hero = deal(2); code = handCode(hero[0], hero[1]);
+    const good = type === "open" ? openSet(n, heroPos).has(code) : (VS_3BET.has(code) || (heroPos === "BB" ? BB_DEF : VS_CALL).has(code));
+    if (good || Math.random() < 0.3) break;
+  }
+  H = { n, bb, type, heroPos, villPos, hero, code, street: "pre", pot: 0, hIn: 0, vIn: 0, hStack: stack, vStack: stack, log: [], dec: [], prompt: null, fb: null, done: false, v: null, vill: null, board: null, quiz: null, startStack: stack };
+  // blinds
+  const sb = Math.max(1, Math.round(bb / 2));
+  const dead = (heroPos !== "SB" && villPos !== "SB" ? sb : 0) + (heroPos !== "BB" && villPos !== "BB" ? bb : 0);
+  H.pot = dead; H.hIn = heroPos === "SB" ? sb : heroPos === "BB" ? bb : 0; H.vIn = villPos === "SB" ? sb : villPos === "BB" ? bb : 0;
+  if (type === "open"){
+    addLog("info", `Mesa de ${n}. Todos largaram até você no ${heroPos}.`);
+    H.prompt = { kind: "pre-open", opts: [["fold", "Fold"], ["raise", `Raise ${money(3 * bb)}`]] };
+  } else {
+    const R = chip((villPos === "SB" ? 3.5 : 3) * bb);
+    H.v = mkRange("pos:" + villPos, n); H.vill = sampleFrom(H.v, hero); H.vIn = R; H.vRaised = true;
+    addLog("vil", `${villPos} aumentou para ${money(R)}. Todos largaram até você no ${heroPos}.`);
+    H.prompt = { kind: "pre-vs", opts: [["fold", "Fold"], ["call", `Call ${money(R - H.hIn)}`], ["raise", `3-bet ${money(chip(R * (heroIP() ? 3 : 4)))}`]] };
+  }
+  H.prompt.text = H.type === "open" ? "O que você faz?" : "Ele aumentou. O que você faz?";
+  H.prompt.rec = recPre();
+  V.hstate = "play";
+}
+// ---------- Recomendação ----------
+function recPre(){
+  const k = H.prompt.kind, code = H.code;
+  if (k === "pre-open"){ const a = chartAction(code, "open", H.n, H.heroPos); return { best: [a], main: a, why: `${code} ${a === "raise" ? "está" : "não está"} no range de abertura do ${H.heroPos} numa mesa de ${H.n} (${pctI(rangePct(openSet(H.n, H.heroPos)))} das mãos).`, chart: { code, mode: "open", n: H.n, pos: H.heroPos } }; }
+  if (k === "pre-vs"){ const a = chartAction(code, "vsraise", H.n, H.heroPos); return { best: [a], main: a, why: `${H.villPos} abre ~${pctI(rangePct(openSet(H.n, H.villPos)))} das mãos. Contra isso: 3-bet com TT+, AQs+, AK; call com pares e suited fortes${H.heroPos === "BB" ? " (no BB você defende bem mais, já pagou 1 big)" : ""}; fold no resto. ${code} → ${ACTS[a].toUpperCase()}.`, chart: { code, mode: "vsraise", n: H.n, pos: H.heroPos } }; }
+  if (k === "pre-vs3"){ const a = VS3_4BET.has(code) ? "raise" : VS3_CALL.has(code) ? "call" : "fold"; return { best: [a], main: a, why: `Contra 3-bet o range dele é forte (TT+, AQ+, KQs e alguns blefes). 4-bet só QQ+/AK; call com 99–JJ, AQ, AJs, KQs; fold o resto. ${code} → ${ACTS[a].toUpperCase()}.` }; }
+}
+function heroOuts(){ const b = shown(); return b.length >= 3 && b.length < 5 ? computeOuts(H.hero, b).n : 0; }
+function recPost(){
+  const b = shown(), eq = equityVs(H.hero, b, H.v), info = rangeInfo(H.v, H.hero, b), tc = r2h(H.vIn - H.hIn), P = potNow();
+  const wet = wetBoard(b), ip = heroIP(), outs = heroOuts(), hand = describe(evalCards([...H.hero, ...b], 2 + b.length));
+  const ctx = `Seu jogo: <b>${hand}</b>${outs ? ` (${outs} outs)` : ""}. Contra o range dele você ganha <b>${pctI(eq)}</b>. Board ${wet ? "molhado" : "seco"}, você ${ip ? "em posição" : "fora de posição"}.`;
+  let best, main, why;
+  if (tc > 0){
+    const c = Math.min(tc, hLeft()), req = c / (P + c), canR = H.prompt.opts.some(o => o[0] === "raise");
+    if (eq >= 0.75 && canR){ best = ["raise", "call"]; main = "raise"; why = `Você está muito na frente (${pctI(eq)}): aumente por valor. Pagar pra enganar também serve.`; }
+    else if (eq >= req + 0.03){ best = ["call"]; main = "call"; why = `Precisa de ${pctI(req)} e tem ${pctI(eq)}: pagar dá lucro.`; if (eq >= 0.65 && canR) best.push("raise"); }
+    else if (eq >= req - 0.04){ best = ["call", "fold"]; main = eq >= req ? "call" : "fold"; why = `Decisão apertada: precisa de ${pctI(req)}, tem ${pctI(eq)}. As duas valem.`; }
+    else if (H.street === "flop" && outs >= 8 && eq >= req - 0.09){ best = ["call", "fold"]; main = "call"; why = `Pela conta faltam ${pctI(req - eq)}, mas com ${outs} outs e stacks fundos as implied odds pagam.`; }
+    else { best = ["fold"]; main = "fold"; why = `Precisa de ${pctI(req)} e tem só ${pctI(eq)}: largue.`; }
+  } else {
+    const valueSize = H.street === "river" && eq >= 0.78 ? ["b66", "b100"] : wet ? ["b66"] : ["b33", "b66"];
+    const airShare = info.parts.filter(p => p[0].startsWith("Nada") || p[0].startsWith("Cartas altas")).reduce((s, p) => s + p[1], 0);
+    if (eq >= 0.62){ best = valueSize; main = valueSize[0] === "b33" ? "b33" : valueSize[0]; why = `Você está na frente do range dele (${pctI(eq)}): aposte por valor, ${wet ? "grande (board molhado, cobre os draws)" : "pequeno (board seco, ele paga com mais coisa)"}.`; }
+    else if (outs >= 8 && H.street !== "river"){ best = ip ? ["b66", "check"] : ["check", "b66"]; main = best[0]; why = `Draw forte (${outs} outs): ${ip ? "semi-blefe é bom, ganha quando ele larga e quando você acerta" : "check e decida contra a aposta; semi-blefe também vale"}.`; }
+    else if (H.street === "river" && ip && airShare >= 0.45 && eq < 0.3){ best = ["check", "b66"]; main = "check"; why = `Sua mão não ganha no showdown, mas ${pctI(airShare)} do range dele é nada ou só cartas altas. Blefe vale; check também.`; }
+    else if (eq >= 0.45){ best = ["check"]; if (!wet && ip) best.push("b33"); main = "check"; why = `Mão média (${pctI(eq)}): controle o pote. ${!wet && ip ? "Uma aposta pequena por valor fino também serve." : ""}`; }
+    else { best = ["check"]; main = "check"; why = `Você está atrás (${pctI(eq)}): não tem valor pra apostar.`; }
+  }
+  return { best, main, why: `${why}<br><span class="muted">${ctx}</span>`, eq, info };
+}
+// ---------- Ações do herói ----------
+const POST_OPTS_FACING = () => { const tc = r2h(H.vIn - H.hIn), o = [["fold", "Fold"], ["call", `Call ${money(Math.min(tc, hLeft()))}`]]; if (!H.raisedThisStreet && hLeft() > tc) { const to = Math.min(chip(H.vIn * 3), H.hStack); o.push(["raise", to >= H.hStack ? `All-in ${money(H.hStack - H.hIn)}` : `Raise ${money(to)}`]); } return o; };
+const POST_OPTS_OPEN = () => { const P = potNow(), L = hLeft(); return [["check", "Check"], ["b33", `⅓ ${money(Math.min(chip(P / 3), L))}`], ["b66", `⅔ ${money(Math.min(chip(P * 2 / 3), L))}`], ["b100", `Pote ${money(Math.min(chip(P), L))}`]]; };
+function heroPrompt(){
+  const facing = H.vIn > H.hIn;
+  H.prompt = { kind: facing ? "facing" : "open", opts: facing ? POST_OPTS_FACING() : POST_OPTS_OPEN(), text: facing ? `Ele apostou ${money(H.vIn - H.hIn)}. Pote ${money(potNow())}.` : `${H.vActed ? "Ele deu check." : "Você fala primeiro."} Pote ${money(potNow())}.` };
+  H.prompt.rec = recPost();
+  // pergunta de leitura de range às vezes, quando ele acabou de apostar
+  if (facing && Math.random() < 0.4){
+    const parts = H.prompt.rec.info.parts.filter(p => p[0] !== "—");
+    if (parts.length >= 2){
+      const right = parts[0][0], pool = Object.values(BUCKETS).filter((x, i, a) => a.indexOf(x) === i && x !== right);
+      H.quiz = { right, opts: shuffle([right, ...shuffle(pool).slice(0, 3)]), parts };
+    }
+  }
+}
+function heroChoose(k){
+  const pr = H.prompt, rec = pr.rec, ok = rec.best.includes(k);
+  const label = (pr.opts.find(o => o[0] === k) || [k, k])[1];
+  H.dec.push({ st: H.street, chosen: label, ok, main: (pr.opts.find(o => o[0] === rec.main) || [rec.main, rec.main])[1] });
+  H.fb = { ok, chosen: label, rec, best: rec.best.map(b => (pr.opts.find(o => o[0] === b) || [b, b])[1]), apt: rec.best.length > 1 };
+  scoreDec(H.street, ok);
+  H.pendingAct = k;
+}
+function scoreDec(st, ok){
+  const s = P.hs || (P.hs = { hands: 0, dec: {} }); const d = s.dec[st] || (s.dec[st] = { n: 0, ok: 0 });
+  d.n++; if (ok) d.ok++;
+  P.xp += ok ? 15 : 3; P.days[today()] = (P.days[today()] || 0) + 1; persist();
+}
+function applyHero(){
+  const k = H.pendingAct; H.fb = null; H.pendingAct = null; H.quiz = null;
+  const st = H.street, b = shown(), kind = H.prompt.kind;
+  if (st === "pre") return applyPre(k, kind);
+  if (k === "fold"){ addLog("hero", "Você largou."); return endHand("vil"); }
+  if (k === "call"){ const c = Math.min(r2h(H.vIn - H.hIn), hLeft()); H.hIn = r2h(H.hIn + c); addLog("hero", `Você pagou ${money(c)}.`); return streetEnd(); }
+  if (k === "check"){ addLog("hero", "Você deu check."); if (H.vActed) return streetEnd(); return villAct(); }
+  // bet/raise
+  const P = potNow(), to = k === "raise" ? Math.min(chip(H.vIn * 3), H.hStack) : Math.min(H.hIn + chip(k === "b33" ? P / 3 : k === "b66" ? P * 2 / 3 : P), H.hStack);
+  H.hIn = to; if (k === "raise") H.raisedThisStreet = true;
+  addLog("hero", `${k === "raise" ? "Você aumentou para" : "Você apostou"} ${money(k === "raise" ? to : to)}${to >= H.hStack ? " (all-in)" : ""}.`);
+  return villRespond();
+}
+function applyPre(k, kind){
+  const bb = H.bb, n = H.n;
+  if (k === "fold"){ addLog("hero", "Você largou."); return endHand("vil"); }
+  if (kind === "pre-open"){
+    H.hIn = 3 * bb; addLog("hero", `Você aumentou para ${money(3 * bb)}.`);
+    // vilão: continua com range de call ou 3-bet
+    const callBase = H.villPos === "BB" ? "bbdef" : "callopen";
+    const cont = mkRange(callBase, n), three = mkRange("3bet", n);
+    const w3 = 0.25;
+    if (Math.random() < w3){
+      H.v = three; H.vill = sampleFrom(three, H.hero);
+      const to = chip(H.hIn * (heroIP() ? 4 : 3)); H.vIn = to; addLog("vil", `${H.villPos} aumentou por cima para ${money(to)} (3-bet).`);
+      H.prompt = { kind: "pre-vs3", opts: [["fold", "Fold"], ["call", `Call ${money(to - H.hIn)}`], ["raise", `4-bet ${money(chip(to * 2.3))}`]], text: "Ele deu 3-bet. O que você faz?" };
+      H.prompt.rec = recPre(); return;
+    }
+    H.v = cont; H.vill = sampleFrom(cont, H.hero); H.vIn = H.hIn; addLog("vil", `${H.villPos} pagou.`);
+    return toFlop();
+  }
+  if (kind === "pre-vs"){
+    if (k === "call"){ addLog("hero", `Você pagou ${money(H.vIn - H.hIn)}.`); H.hIn = H.vIn; return toFlop(); }
+    const to = chip(H.vIn * (heroIP() ? 3 : 4)); H.hIn = to; addLog("hero", `Você deu 3-bet para ${money(to)}.`);
+    const vc = handCode(H.vill[0], H.vill[1]);
+    if (VS3_4BET.has(vc) || BASES.call3bet.has(vc)){ H.vIn = to; H.v = mkRange("call3bet", n); addLog("vil", `${H.villPos} pagou o 3-bet.`); return toFlop(); }
+    addLog("vil", `${H.villPos} largou.`); return endHand("hero");
+  }
+  if (kind === "pre-vs3"){
+    if (k === "call"){ addLog("hero", `Você pagou ${money(H.vIn - H.hIn)}.`); H.hIn = H.vIn; return toFlop(); }
+    const to = chip(H.vIn * 2.3); H.hIn = to; addLog("hero", `Você deu 4-bet para ${money(to)}.`);
+    if (VS3_4BET.has(handCode(H.vill[0], H.vill[1]))){ H.vIn = to; H.v = mkRange("4bet", n); addLog("vil", `${H.villPos} pagou o 4-bet.`); return toFlop(); }
+    addLog("vil", `${H.villPos} largou.`); return endHand("hero");
+  }
+}
+function toFlop(){
+  H.pot = r2h(H.pot + H.hIn + H.vIn); H.hStack = r2h(H.hStack - H.hIn); H.vStack = r2h(H.vStack - H.vIn); H.hIn = H.vIn = 0;
+  H.board = deal(5, [...H.hero, ...H.vill]);
+  H.street = "flop"; return streetStart();
+}
+function streetStart(){
+  H.hIn = H.vIn = 0; H.vActed = false; H.raisedThisStreet = false; H.vRaisedStreet = false;
+  addLog("board", `${SN[H.street]}: ${shown().slice(H.street === "flop" ? 0 : -1).map(c => rl(c >> 2) + SUITS[c & 3]).join(" ")}`);
+  if (H.hStack <= 0 || H.vStack <= 0) return streetEnd();
+  if (heroIP()) return villAct(); // vilão fala primeiro
+  heroPrompt();
+}
+function streetEnd(){
+  H.pot = r2h(H.pot + H.hIn + H.vIn); H.hStack = r2h(H.hStack - H.hIn); H.vStack = r2h(H.vStack - H.vIn); H.hIn = H.vIn = 0;
+  if (H.street === "river" || H.hStack <= 0 || H.vStack <= 0){ H.street = "river"; return endHand("show"); }
+  H.street = H.street === "flop" ? "turn" : "turn" === H.street ? "river" : "river";
+  return streetStart();
+}
+// ---------- Política do vilão ----------
+function vClass(){ return classify(H.vill[0], H.vill[1], shown()); }
+function villAct(){
+  const c = vClass(), b = shown(), wet = wetBoard(b), P = potNow(), checkedTo = H.log.some(l => l.st === H.street && l.who === "hero" && l.t.startsWith("Você deu check"));
+  const pBet = { monster: 0.75, top: 0.7, pair: 0.25, draw: 0.45, weak: checkedTo ? 0.35 : 0.2, air: checkedTo ? 0.3 : 0.12 }[c];
+  H.vActed = true;
+  if (Math.random() < pBet && vLeft() > 0){
+    const size = Math.min(chip(P * (c === "monster" && wet ? 0.75 : wet ? 0.66 : 0.33)), H.vStack);
+    H.vIn = r2h(H.hIn + size); rAct(H.v, "bet", b);
+    addLog("vil", `${H.villPos} apostou ${money(size)}.`);
+  } else { rAct(H.v, "check", b); addLog("vil", `${H.villPos} deu check.`); if (checkedTo) return streetEnd(); }
+  heroPrompt();
+}
+function villRespond(){
+  const c = vClass(), b = shown(), bet = r2h(H.hIn - H.vIn), P = potNow() - bet, frac = bet / Math.max(P, 1);
+  const allin = H.hIn >= H.hStack;
+  let r = Math.random(), act;
+  if (c === "monster") act = !allin && r < 0.4 && !H.vRaisedStreet ? "raise" : "call";
+  else if (c === "top") act = !allin && r < 0.1 && !H.vRaisedStreet ? "raise" : "call";
+  else if (c === "pair") act = frac <= 0.5 || r < 0.5 ? "call" : "fold";
+  else if (c === "draw") act = !allin && r < 0.12 && H.street !== "river" && !H.vRaisedStreet ? "raise" : (frac <= 0.7 || r < 0.4) && H.street !== "river" ? "call" : "fold";
+  else if (c === "weak") act = r < 0.25 && H.street !== "river" ? "call" : "fold";
+  else act = r < 0.06 ? "call" : "fold";
+  if (allin && act === "call" && (c === "pair" && r > 0.5 || c === "draw" && r > 0.5)) act = "fold";
+  if (act === "fold"){ addLog("vil", `${H.villPos} largou.`); return endHand("hero"); }
+  if (act === "call"){ const cc = Math.min(H.hIn, H.vStack); H.vIn = cc; rAct(H.v, "call", b); addLog("vil", `${H.villPos} pagou.`); return streetEnd(); }
+  const to = Math.min(chip(H.hIn * 3), H.vStack); H.vIn = to; H.vRaisedStreet = true; rAct(H.v, "raise", b);
+  addLog("vil", `${H.villPos} aumentou para ${money(to)}${to >= H.vStack ? " (all-in)" : ""}.`);
+  H.raisedThisStreet = true; heroPrompt();
+}
+function endHand(w){
+  if (H.board == null) H.board = deal(5, [...H.hero, ...(H.vill || [])]);
+  if (!H.vill) H.vill = deal(2, [...H.hero, ...H.board]);
+  const potT = r2h(H.pot + H.hIn + H.vIn);
+  let res;
+  if (w === "show"){
+    const hs = evalCards([...H.hero, ...H.board], 7), vs = evalCards([...H.vill, ...H.board], 7);
+    res = hs > vs ? "hero" : hs < vs ? "vil" : "split";
+    H.showdown = { hd: describe(hs), vd: describe(vs) };
+  } else res = w;
+  const heroPut = r2h(H.startStack - H.hStack + H.hIn);
+  H.net = res === "hero" ? r2h(potT - heroPut) : res === "split" ? r2h(potT / 2 - heroPut) : -heroPut;
+  H.res = res; H.done = true; H.prompt = null;
+  const s = P.hs || (P.hs = { hands: 0, dec: {} }); s.hands++; persist();
+}
+function quizAnswer(k){
+  const q = H.quiz; q.ans = k; q.ok = k === q.right;
+  const s = P.hs || (P.hs = { hands: 0, dec: {} }); const d = s.dec.range || (s.dec.range = { n: 0, ok: 0 }); d.n++; if (q.ok) d.ok++;
+  P.xp += q.ok ? 8 : 2; persist();
+}
+
+// ---------- Tela ----------
+function renderHand(M){
+  if (!H){ M.innerHTML = `<section class="card"><h2>Jogar mãos</h2><p>O app distribui uma mão de cash e você joga até o fim contra um vilão que age de acordo com as cartas dele. Em cada decisão: o que fazer, o range dele e a sua equity.</p><button type="button" class="big gold" data-act="hnew">▶ Distribuir mão</button>${handStatsHTML()}</section>`; return; }
+  const b = H.board ? (H.done ? H.board : shown()) : [];
+  let h = `<section class="card"><div class="qhead"><span class="tag" style="margin:0">Mesa de ${H.n} · você ${H.heroPos} × vilão ${H.villPos}</span><span class="prog">${heroIP() ? "IP" : "OOP"}</span></div>
+    <div class="felt"><div class="frow"><span class="lb">Vilão</span>${H.done && H.vill ? H.vill.map(c => cardHTML(c)).join("") : `<span class="pc back"></span><span class="pc back"></span>`}<span class="potc">pote<b>${money(H.done ? r2h(H.pot + H.hIn + H.vIn) : potNow())}</b></span></div>
+      ${b.length ? `<div class="frow"><span class="lb">${H.done && !H.showdown && H.log.every(l => l.st === "pre") ? "Viria" : "Mesa"}</span>${b.map(c => cardHTML(c, true)).join("")}</div>` : ""}
+      <div class="frow"><span class="lb">Você</span>${H.hero.map(c => cardHTML(c)).join("")}<span class="potc">stack<b>${money(H.done ? r2h(H.startStack + H.net) : hLeft())}</b></span></div></div>
+    <ol class="hlog">${H.log.map(l => `<li class="${l.who}">${l.t}</li>`).join("")}</ol>`;
+  if (H.done){
+    h += `<div class="fb ${H.net >= 0 ? "ok" : "bad"}"><b>${H.res === "hero" ? "Você ganhou o pote" : H.res === "split" ? "Pote dividido" : "Você perdeu"} · ${H.net >= 0 ? "+" : "−"}${money(Math.abs(H.net))}</b>${H.showdown ? `<p>Você: ${H.showdown.hd}. Vilão: ${H.showdown.vd}.</p>` : `<p>Vilão tinha ${H.vill.map(c => rl(c >> 2) + SUITS[c & 3]).join(" ")}.</p>`}</div>
+      <h3 style="margin-top:14px">Suas decisões</h3><ul class="declist">${H.dec.map(d => `<li class="${d.ok ? "ok" : "bad"}"><span>${SN[d.st]}</span><b>${d.ok ? "✓" : "✗"} ${d.chosen}</b>${d.ok ? "" : `<small>melhor: ${d.main}</small>`}</li>`).join("")}</ul>
+      <button type="button" class="big gold" data-act="hnew">Próxima mão →</button>`;
+    M.innerHTML = h + handStatsHTML() + `</section>`; return;
+  }
+  const pr = H.prompt;
+  if (H.quiz && !H.quiz.ans){
+    h += `<p class="qtext">Antes de decidir: o que o range dele mais tem agora?</p><div class="opts one">${H.quiz.opts.map(o => `<button type="button" class="opt" data-act="hquiz" data-k="${o}">${o}</button>`).join("")}</div>`;
+    M.innerHTML = h + `</section>`; return;
+  }
+  if (H.quiz && H.quiz.ans){
+    h += `<div class="fb ${H.quiz.ok ? "ok" : "bad"}"><b>${H.quiz.ok ? "✓ Leitura certa" : "✗ Leitura errada"}</b><p>${H.quiz.parts.slice(0, 4).map(p => `${p[0]}: <b>${pctI(p[1])}</b>`).join(" · ")}</p></div>`;
+  }
+  h += `<p class="qtext">${pr.text}</p>`;
+  if (!H.fb){
+    h += `<div class="opts ${pr.opts.length === 3 ? "three" : ""}">${pr.opts.map(([k, l]) => `<button type="button" class="opt hopt a-${k === "raise" || k.startsWith("b") ? "raise" : k}" data-act="hdec" data-k="${k}">${l}</button>`).join("")}</div>`;
+  } else {
+    const f = H.fb;
+    h += `<div class="opts ${pr.opts.length === 3 ? "three" : ""}">${pr.opts.map(([k, l]) => `<button type="button" class="opt hopt ${f.rec.best.includes(k) ? "right" : l === f.chosen ? "wrong" : "dim"}" disabled>${l}</button>`).join("")}</div>
+      <div class="fb ${f.ok ? "ok" : "bad"}"><b>${f.ok ? (f.apt ? "✓ Boa (mais de uma opção vale)" : "✓ Certo") : "✗ Não é o ideal"}</b>${f.ok ? "" : ` · melhor: ${f.best.join(" ou ")}`}<p>${f.rec.why}</p>
+      ${f.rec.info ? `<div class="rinfo"><small>Range dele agora: ${pctI(f.rec.info.share)} das mãos</small>${f.rec.info.parts.filter(p => p[0] !== "—").slice(0, 5).map(p => `<div class="rbar"><span>${p[0]}</span><i><em style="width:${(p[1] * 100).toFixed(0)}%"></em></i><b>${pctI(p[1])}</b></div>`).join("")}</div>` : ""}</div>
+      ${f.rec.chart ? `<button type="button" class="linkbtn" data-act="chart">${V.showChart ? "▾" : "▸"} Ver a tabela</button>${V.showChart ? chartHTML(f.rec.chart) : ""}` : ""}
+      <button type="button" class="big" data-act="hgo" id="hgo">Continuar a mão →</button>`;
+  }
+  M.innerHTML = h + `</section>`;
+  if (H.fb) requestAnimationFrame(() => { const n = $("hgo"); if (n) n.scrollIntoView({ behavior: "smooth", block: "nearest" }); });
+}
+function handStatsHTML(){
+  const s = P.hs; if (!s || !s.hands) return "";
+  const row = k => { const d = s.dec[k]; return `<li><span>${{ pre: "Pré-flop", flop: "Flop", turn: "Turn", river: "River", range: "Leitura de range" }[k]}</span><b>${d && d.n ? pctI(d.ok / d.n) : "—"}</b><small>${d ? d.ok + "/" + d.n : ""}</small></li>`; };
+  return `<div class="hstats"><h3>${s.hands} mãos jogadas · acerto por rua</h3><ul>${["pre", "flop", "turn", "river", "range"].map(row).join("")}</ul></div>`;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b || b.disabled) return;
+  switch (b.dataset.act){
+    case "hnew": newHand(); V.tab = "jogar"; V.showChart = false; window.scrollTo({ top: 0 }); break;
+    case "hdec": heroChoose(b.dataset.k); break;
+    case "hgo": applyHero(); V.showChart = false; window.scrollTo({ top: 0, behavior: "smooth" }); break;
+    case "hquiz": quizAnswer(b.dataset.k); break;
+    default: return;
+  }
+  render();
+});
+
+render();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+TRILHA DO CASH — versão offline (PWA)
+
+Publicar no GitHub Pages (repositório novo, ex.: trilha-cash):
+  cd ~/Projetos/trilha-cash
+  unzip -o ~/Downloads/trilha-cash-pwa.zip -d .
+  git init -b main && git add -A && git commit -m "Trilha do Cash"
+  gh repo create trilha-cash --public --source=. --remote=origin --push
+  gh api -X POST "repos/{owner}/{repo}/pages" -f "source[branch]=main" -f "source[path]=/"
+
+Instalar no celular: abra o link no Safari/Chrome > Adicionar à Tela de Início.
+O progresso fica salvo no próprio aparelho.
+Atualizar: troque os arquivos e mude CACHE = "trilha-cash-v2" no sw.js.
