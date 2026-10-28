@@ -117,6 +117,13 @@ nav.tabs button[aria-current="page"]{background:var(--accent-soft);color:var(--i
 .decore{background:var(--gold-soft);border-radius:12px;padding:12px 14px;margin:14px 0}
 .decore b:first-child{display:block;font-family:var(--f-display);letter-spacing:.08em;text-transform:uppercase;font-size:14px;margin-bottom:4px}
 .ex{background:var(--surface-2);border-radius:12px;padding:12px 14px;margin:12px 0}
+.tips{background:var(--accent-soft);border-radius:12px;padding:12px 14px;margin:14px 0}
+.tips>b{display:block;font-family:var(--f-display);letter-spacing:.08em;text-transform:uppercase;font-size:14px;margin-bottom:4px;color:var(--accent)}
+.lesson .tips ul{margin:4px 0 0;padding-left:18px;gap:8px}
+.ex .mini,.tips .mini,.lesson td .mini{vertical-align:middle;margin:0 2px}
+.htips{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--accent-soft);color:var(--ink);font-size:15px}
+.htips>b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.htips ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
 .tablewrap{overflow-x:auto}
 /* Treino */
 .qhead{display:flex;align-items:center;gap:10px}
@@ -379,6 +386,8 @@ function numOpts(right, pool, k = 4, fmt = x => x){
   return [right, ...p].sort((a, b) => a - b).map(fmt);
 }
 
+const CC = s => s.split(" ").map(x => RANKS.indexOf(x[0]) * 4 + "shdc".indexOf(x[1]));
+const mc = s => `<span class="mini">${CC(s).map(miniCard).join("")}</span>`;
 /* ================= Conteúdo: módulos ================= */
 const BET_SIZES = [[1/3, "⅓ do pote"], [0.5, "metade do pote"], [2/3, "⅔ do pote"], [0.75, "¾ do pote"], [1, "do tamanho do pote"], [1.5, "1,5x o pote"]];
 const MODS = [
@@ -405,6 +414,57 @@ const MODS = [
    <ul><li><b>3-bet (aumentar de novo):</b> TT+, AQs+, AK. Um pouco de A5s/A4s como blefe.</li><li><b>Call (pagar):</b> pares 22–99 (pra acertar trinca), suited fortes (AJs, KQs, QJs, JTs, T9s), AQo, KQo.</li><li><b>Fold:</b> o resto. Mão "bonita" fora de naipe tipo KJo, QTo, A9o perde dinheiro contra aumento.</li><li>Contra aumento do <b>UTG</b>, seja ainda mais apertado.</li><li>No <b>BB</b> você já pagou 1 big, então pode defender bem mais.</li></ul>
    <h4>Tamanho do 3-bet</h4><p>3x o aumento em posição (aumentou pra R$ 6 → 3-bet pra R$ 18). +1x por quem já pagou.</p>
    <div class="decore"><b>Decore</b>Contra aumento: aumentar com as melhores, pagar com pares e suited, largar o resto.</div>` },
+ { id: "eq", stage: "Matemática", title: "Colinha de %", sub: "os números que todo regular sabe de cor",
+   lesson: `<p>Ninguém calcula equity na mesa. Quem joga bem <b>sabe uns 20 números de cor</b> e encaixa a mão no confronto parecido.</p>
+   <h4>1. Sua mão contra uma mão aleatória</h4>
+   <div class="tablewrap"><table><tr><th>Par</th><th>Ganha</th><th>Par</th><th>Ganha</th></tr>
+   <tr><td>AA</td><td><b>85%</b></td><td>77</td><td><b>66%</b></td></tr><tr><td>KK</td><td><b>82%</b></td><td>66</td><td><b>63%</b></td></tr>
+   <tr><td>QQ</td><td><b>80%</b></td><td>55</td><td><b>60%</b></td></tr><tr><td>JJ</td><td><b>77%</b></td><td>44</td><td><b>57%</b></td></tr>
+   <tr><td>TT</td><td><b>75%</b></td><td>33</td><td><b>54%</b></td></tr><tr><td>99</td><td><b>72%</b></td><td>22</td><td><b>50%</b></td></tr>
+   <tr><td>88</td><td><b>69%</b></td><td></td><td></td></tr></table></div>
+   <div class="tablewrap"><table><tr><th>Mão</th><th>Ganha</th><th>Mão</th><th>Ganha</th></tr>
+   <tr><td>AKs</td><td><b>67%</b></td><td>K9o</td><td><b>58%</b></td></tr><tr><td>AQs</td><td><b>66%</b></td><td>JTs</td><td><b>57%</b></td></tr>
+   <tr><td>AKo</td><td><b>65%</b></td><td>A2o</td><td><b>55%</b></td></tr><tr><td>AJs</td><td><b>65%</b></td><td>T9s</td><td><b>53%</b></td></tr>
+   <tr><td>KQs</td><td><b>63%</b></td><td>Q5o</td><td><b>50%</b></td></tr><tr><td>KJo</td><td><b>61%</b></td><td>87s</td><td><b>48%</b></td></tr>
+   <tr><td>QJo</td><td><b>58%</b></td><td>72o</td><td><b>35%</b></td></tr></table></div>
+   <p class="ex"><b>Atalhos:</b> cada par abaixo do AA perde ~3% (85 → 82 → 80 → 77…). Suited vale só <b>~2%</b> a mais que offsuit.<br><b>AA contra mais gente:</b> 1 oponente 85% · 2 → 74% · 3 → 64% · 4 → 56%. Por isso AA quer isolar: aumente maior quando tem limpers.</p>
+   <p class="ex"><b>Exemplo de mesa:</b> ${mc("Ks Jd")} ganha 61% contra mão aleatória. Mas ninguém aumenta com mão aleatória: contra o range do <b>UTG</b> cai pra <b>35%</b>; contra o range do <b>botão</b>, 51%. A mesma mão é fold contra um e jogo contra o outro.</p>
+   <h4>2. Confrontos clássicos (all-in pré-flop)</h4>
+   <div class="tablewrap"><table><tr><th>Tipo</th><th>Exemplo</th><th>Quem ganha</th></tr>
+   <tr><td>Par maior × par menor</td><td>${mc("As Ah")} × ${mc("Kc Kd")}</td><td><b>82 × 18</b></td></tr>
+   <tr><td>Par × duas maiores</td><td>${mc("Qs Qh")} × ${mc("Ac Kd")}</td><td><b>57 × 43</b></td></tr>
+   <tr><td>Par × duas menores</td><td>${mc("Js Jh")} × ${mc("Tc 9d")}</td><td><b>85 × 15</b></td></tr>
+   <tr><td>Par × uma maior, uma menor</td><td>${mc("8s 8h")} × ${mc("Ac 2d")}</td><td><b>70 × 30</b></td></tr>
+   <tr><td>Duas maiores × duas menores</td><td>${mc("As Kd")} × ${mc("8c 7c")}</td><td><b>58 × 42</b></td></tr>
+   <tr><td>Dominada (mesma carta, kicker pior)</td><td>${mc("As Kd")} × ${mc("Ac Qh")}</td><td><b>72 × 24</b> <small>(4% empata)</small></td></tr>
+   <tr><td>AK × par pequeno</td><td>${mc("As Kd")} × ${mc("2c 2h")}</td><td><b>46 × 54</b></td></tr>
+   <tr><td>AA × AK</td><td>${mc("As Ah")} × ${mc("Ac Kd")}</td><td><b>92 × 7</b></td></tr></table></div>
+   <h4>3. O que o flop te dá</h4>
+   <div class="tablewrap"><table><tr><th>Você tem</th><th>No flop</th><th>Chance</th></tr>
+   <tr><td>Par na mão</td><td>Trinca ou melhor</td><td><b>12%</b> (1 em 8)</td></tr>
+   <tr><td>Duas cartas diferentes</td><td>Pelo menos um par</td><td><b>32%</b> (1 em 3)</td></tr>
+   <tr><td>Duas cartas diferentes</td><td>Dois pares com as duas</td><td><b>2%</b></td></tr>
+   <tr><td>Suited</td><td>Flush draw</td><td><b>11%</b></td></tr>
+   <tr><td>Suited</td><td>Flush pronto</td><td><b>0,8%</b></td></tr>
+   <tr><td>Conectada (87, JT…)</td><td>Sequência aberta</td><td><b>10%</b></td></tr>
+   <tr><td>Conectada</td><td>Sequência pronta</td><td><b>1,3%</b></td></tr></table></div>
+   <h4>4. Draws: próxima carta e até o river</h4>
+   <div class="tablewrap"><table><tr><th>Draw</th><th>Outs</th><th>Próx. carta</th><th>Até o river</th></tr>
+   <tr><td>Par → trinca</td><td>2</td><td><b>4%</b></td><td><b>8%</b></td></tr>
+   <tr><td>Gutshot</td><td>4</td><td><b>9%</b></td><td><b>17%</b></td></tr>
+   <tr><td>Duas overcards</td><td>6</td><td><b>13%</b></td><td><b>24%</b></td></tr>
+   <tr><td>Sequência aberta</td><td>8</td><td><b>17%</b></td><td><b>31%</b></td></tr>
+   <tr><td>Flush draw</td><td>9</td><td><b>19%</b></td><td><b>35%</b></td></tr>
+   <tr><td>Flush draw + overcard</td><td>12</td><td><b>26%</b></td><td><b>45%</b></td></tr>
+   <tr><td>Flush + sequência</td><td>15</td><td><b>32%</b></td><td><b>54%</b></td></tr></table></div>
+   <p class="ex"><b>Exemplo:</b> você tem ${mc("9h 8h")}, flop ${mc("7h 6c 2h")}. Flush (9 outs) + sequência com 5 ou 10 (8 outs, mas 5♥ e 10♥ já contam no flush) = <b>15 outs</b> → 32% no turn, <b>54% até o river</b>. Você é favorito até contra top pair.</p>
+   <p class="ex"><b>Ajuste do ×4:</b> acima de 8 outs a regra exagera. Desconte (outs − 8): 15 outs → 60 − 7 = <b>53%</b>.</p>
+   <h4>5. Com que mão você termina (7 cartas)</h4>
+   <div class="tablewrap"><table><tr><th>Mão</th><th>%</th><th>Mão</th><th>%</th></tr>
+   <tr><td>Carta alta</td><td><b>17%</b></td><td>Flush</td><td><b>3%</b></td></tr><tr><td>Par</td><td><b>44%</b></td><td>Full house</td><td><b>2,6%</b></td></tr>
+   <tr><td>Dois pares</td><td><b>24%</b></td><td>Quadra</td><td><b>0,17%</b></td></tr><tr><td>Trinca</td><td><b>5%</b></td><td>Straight flush</td><td><b>0,03%</b></td></tr>
+   <tr><td>Sequência</td><td><b>4,6%</b></td><td></td><td></td></tr></table></div>
+   <div class="decore"><b>Decore</b>Par × duas maiores = 55/45. Dominada = 70/30. Par maior × menor = 80/20. Trinca no flop = 1 em 8. Flush draw = 19% por carta, 35% até o river.</div>` },
  { id: "odds", stage: "Matemática", title: "Pot odds", sub: "quanto você precisa pra pagar",
    lesson: `<p>Antes de pagar uma aposta, pergunte: <b>quantas vezes preciso ganhar pra isso dar lucro?</b></p>
    <p class="ex">Fórmula: <b>aposta ÷ (pote + 2 × aposta)</b><br>Pote R$ 100, aposta R$ 50 → 50 ÷ 200 = <b>25%</b></p>
@@ -448,6 +508,59 @@ const MODS = [
    lesson: `<ul><li><b>Bankroll:</b> tenha 20 a 30 buy-ins do nível que você joga. Blinds 1/2 com buy-in de R$ 200 → R$ 4.000 a R$ 6.000.</li><li><b>Stop-loss:</b> perdeu 3 buy-ins na sessão? Pare. Tilt custa mais que qualquer mão.</li><li><b>Variância:</b> mesmo jogando certo, dá pra perder por semanas. Avalie a decisão, não o resultado.</li><li><b>Subir de nível:</b> só com bankroll pro nível novo e resultado consistente no atual.</li><li><b>Revisão:</b> anote 2 ou 3 mãos difíceis por sessão e revise com calma.</li></ul>
    <div class="decore"><b>Decore</b>Decisão boa com resultado ruim continua sendo decisão boa.</div>` }
 ];
+const TIPS = {
+  fund: [`Board ${mc("Kd Ks 7c 7h 2s")}: você com ${mc("Ac 3d")}, ele com ${mc("Qh Jh")}. Os dois jogam K K 7 7 + kicker: seu <b>A</b> ganha.`,
+    `4 cartas do mesmo naipe na mesa: quem tem a maior desse naipe ganha. Sem nenhuma, não pague aposta grande.`,
+    `Board pareado + seu flush: full house ganha de flush. Contra muita ação no river, flush baixo vira mão de pagar, não de aumentar.`,
+    `Antes de apostar no river, pergunte: <b>qual a pior mão que me paga?</b> Se nenhuma paga, é check.`],
+  pos: [`Mesma mão, posição diferente: ${mc("Ks Jd")} é raise no BTN e fold no UTG (mesa de 9).`,
+    `No botão, se o vilão dá check no flop, uma aposta de ⅓ com ar já lucra muitas vezes. Fora de posição a mesma jogada custa bem mais.`,
+    `No BB contra raise do botão: defenda mais (já pagou 1 big), mas lembre que vai jogar a mão inteira fora de posição.`,
+    `Fora de posição com mão média ou draw: prefira check-call. Deixe ele apostar o ar dele.`],
+  pre: [`Blinds R$ 1/2, 2 limpers e você no CO com ${mc("As Qd")}: aumente para <b>R$ 10</b> (R$ 6 + R$ 2 por limper).`,
+    `Mesa ao vivo cheia de limp-call? Aumente ainda mais (4–5 bigs + 1 por limper): pagam igual e você ganha um pote maior com mão melhor.`,
+    `Par pequeno (22–66) em posição inicial: o lucro vem de flopar trinca (12%, 1 em 8). Precisa de stacks fundos pra compensar.`,
+    `Suited conectada (${mc("7h 6h")}, ${mc("6s 5s")}) ganha em pote multiway com stack fundo, não em heads-up contra mão forte.`],
+  vsr: [`UTG aumenta, você tem ${mc("As Jd")}: contra o range dele você tem só <b>43%</b> → fold. Contra o raise do botão a mesma mão tem <b>59%</b> → 3-bet ou call.`,
+    `Pagar aumento com par pequeno pra acertar trinca: regra <b>15–20x</b>. Call de R$ 10 só vale se ele tiver R$ 150–200 atrás.`,
+    `3-bet: 3x em posição, 4x fora. Ele abriu pra R$ 6 → R$ 18 (IP) ou R$ 24 (OOP).`,
+    `Contra 3-bet de nit ao vivo (jogador que só faz com QQ+/AK), AQ e JJ viram fold sem dor.`],
+  eq: [`Na mesa, não procure o número exato: encaixe no tipo de confronto (par × overcards, dominada…) e use o número decorado.`,
+    `All-in com ${mc("Qs Qh")}: contra AK você tem 57%, contra KK/AA só 18%. Junte com o range dele: se ele só vai all-in com AA/KK/AK, QQ ganha ~40% no total.`,
+    `Pense no que ele tem, não no que você tem: ${mc("Ks Jd")} contra mão aleatória é 61%, contra o range de quem aumentou do UTG é 35%.`],
+  odds: [`Pote R$ 60, ele aposta R$ 30 (metade): precisa <b>25%</b>. Flush draw no turn (19%) → fold. Flush draw + overcard (12 outs, 26%) → call.`,
+    `Aposta pequena de ⅓ = precisa só 20%: quase qualquer draw de 8+ outs paga.`,
+    `Overbet de 2x o pote = precisa 40%: só pague com mão que ganha dos blefes e de parte das apostas por valor.`,
+    `No river não tem draw: a pergunta vira "ele blefa mais que X% das vezes?". Aposta de metade do pote → ele precisa estar blefando em 25% das vezes.`],
+  outs: [`${mc("9h 8h")} no flop ${mc("7h 6c 2h")}: 9 outs de flush + 6 outs de sequência que não são copas = <b>15 outs ≈ 54%</b> até o river.`,
+    `Outs sujas: ${mc("As Qd")} em ${mc("Jc 7s 3h")} contra ${mc("Ah Jd")}: o ás não te salva (ele faz dois pares). Só as 3 damas são outs.`,
+    `Flush draw em board pareado: a carta do seu flush pode dar full pra ele. Conte uma ou duas outs a menos.`,
+    `Regra do 4 só quando você vê as duas cartas (all-in no flop). Se ainda vai ter aposta no turn, use ×2.`],
+  draw: [`Pote R$ 40, ele aposta R$ 20. Sequência aberta (8 outs, 17%) precisa de 25% → pela conta, fold. Mas se ganhar <b>~R$ 38 a mais</b> quando acertar, o call se paga (implied odds).`,
+    `Fórmula das implied odds: <b>quanto preciso ganhar depois = call ÷ chance − (pote + call)</b>. Ex.: 20 ÷ 0,17 − 80 ≈ R$ 38.`,
+    `Draw pro nuts vale mais: flush de ás leva o pote todo; sequência baixa pode perder pra sequência maior.`,
+    `Combo draw (12+ outs) no flop: muitas vezes vale aumentar (semi-blefe) em vez de só pagar.`],
+  tex: [`${mc("Ks 7d 2c")} (seco): quem aumentou pré-flop tem muito mais K que quem pagou. C-bet de ⅓ com quase tudo.`,
+    `${mc("Jh Th 8c")} (molhado): o range de quem pagou acerta muito (QJ, T9, 97, flush draws). Aposte ⅔ com valor e draws bons; check com ar.`,
+    `Board baixo ${mc("6s 5d 4c")}: favorece quem pagou do BB (tem 87, 76, 32, pares baixos). C-bet com mais cuidado.`,
+    `Turn que completa draw (3ª carta do naipe): aposte menos com top pair e blefe menos. Ele pagou o flop com draws.`],
+  blefe: [`Blefe de ⅔ do pote no river precisa de 40% de fold: funciona contra nit, não contra calling station.`,
+    `Bons blefes tiram as melhores mãos dele: com ${mc("Ah")} num board de 3 copas, ele não tem o flush nuts.`,
+    `Semi-blefe é melhor que blefe puro: com draw você ganha quando ele larga <b>e</b> quando você acerta.`,
+    `Se ele só aposta grande no river com valor (comum ao vivo), o MDF não importa: largue mais.`],
+  spr: [`Blinds 1/2, stacks R$ 200, você aumenta pra R$ 6 e o BB paga: pote ~R$ 13, SPR ≈ <b>15</b>. Top pair aqui é mão de pote pequeno.`,
+    `Pote 3-betado: ele abre R$ 6, você 3-beta R$ 20, ele paga: pote ~R$ 41, stack R$ 180 → SPR ≈ <b>4</b>. Top pair, top kicker vai all-in.`,
+    `Quer jogar o stack todo com top pair? Infle o pote cedo (3-bet, aposta grande no flop) pra baixar o SPR.`,
+    `Contra stack curto, jogue menos mãos especulativas (pares baixos, suited conectadas): não há implied odds.`],
+  tipos: [`Limp-call pré, check-call no flop e no turn: range de par médio ou draw. River em branco → aposte por valor fino com top pair.`,
+    `Calling station: aposte as 3 ruas com top pair bom; nunca blefe o river.`,
+    `Nit aposta grande no turn: dois pares ou melhor. Top pair larga.`,
+    `Maníaco: deixe ele apostar. Check-call com mão média rende mais que apostar.`],
+  mente: [`Antes de sentar: defina stop-loss (3 buy-ins) e o horário de sair.`,
+    `Depois de uma bad beat, jogue só o range do UTG por duas voltas da mesa. Isso corta o tilt.`,
+    `Revise 3 mãos por sessão: monte o spot na aba Jogar e compare com o que você fez.`,
+    `Anote cada sessão (data, horas, resultado). Com 100 horas você sabe seu ganho real por hora.`]
+};
 const STATIC = {
   tipos: [
     ["Jogador que paga quase tudo e quase nunca aumenta (calling station). Qual o melhor plano?", "Apostar por valor mais vezes e maior", ["Blefar bastante", "Dar check pra induzir", "Jogar mais mãos fracas"]],
@@ -480,7 +593,15 @@ const CARDS = [
   ["tex", "Flop seco: c-bet de que tamanho?", "Pequeno: ⅓ do pote"], ["tex", "Flop molhado: c-bet de que tamanho?", "Grande: ⅔ do pote"],
   ["fund", "Flush ou sequência: quem ganha?", "Flush"], ["fund", "Full house ou flush: quem ganha?", "Full house"],
   ["tipos", "Contra calling station", "Valor grande, quase nunca blefe"], ["tipos", "Contra maníaco", "Pague mais com mão média"],
-  ["mente", "Bankroll pra cash", "20 a 30 buy-ins"], ["mente", "Stop-loss", "Perdeu 3 buy-ins? Pare a sessão"]
+  ["mente", "Bankroll pra cash", "20 a 30 buy-ins"], ["mente", "Stop-loss", "Perdeu 3 buy-ins? Pare a sessão"],
+  ["eq", "AA contra uma mão aleatória", "85%"], ["eq", "Quanto cada par perde por degrau (AA → KK → QQ…)?", "~3% (85, 82, 80, 77, 75…)"], ["eq", "Suited vale quanto a mais que offsuit?", "~2% de equity"],
+  ["eq", "Par × duas cartas maiores (QQ × AK)", "57 × 43: cara ou coroa"], ["eq", "Par maior × par menor (AA × KK)", "82 × 18 (4 por 1)"], ["eq", "Par × duas menores (JJ × T9)", "85 × 15"],
+  ["eq", "Par × uma maior e uma menor (88 × A2)", "70 × 30"], ["eq", "Duas maiores × duas menores (AK × 87s)", "58 × 42"], ["eq", "Mão dominada (AK × AQ)", "72 × 24 (4% empata)"], ["eq", "AK × par pequeno (22)", "46 × 54: o par é favorito"],
+  ["eq", "AA contra 3 oponentes", "~64%"], ["eq", "Par na mão: chance de flopar trinca", "12% (1 em 8)"], ["eq", "Duas cartas diferentes: chance de flopar pelo menos um par", "32% (1 em 3)"],
+  ["eq", "Suited: chance de flopar flush draw", "11%"], ["eq", "Suited: chance de flopar flush pronto", "0,8%"], ["eq", "Flush draw no flop: próxima carta / até o river", "19% / 35%"],
+  ["eq", "Sequência aberta no flop: próxima carta / até o river", "17% / 31%"], ["eq", "Gutshot no flop: próxima carta / até o river", "9% / 17%"], ["eq", "15 outs no flop: até o river", "54%"],
+  ["eq", "Regra do ×4 com mais de 8 outs", "outs × 4 − (outs − 8)"], ["eq", "KJo: contra mão aleatória × contra range do UTG", "61% × 35%"],
+  ["draw", "Implied odds: quanto preciso ganhar depois de acertar?", "call ÷ chance − (pote + call)"], ["vsr", "Pagar aumento com par pequeno pra trinca", "Regra 15–20x: stack atrás ≥ 15–20 × o call"]
 ].map((c, i) => ({ id: "c" + i, mod: c[0], front: c[1], back: c[2] }));
 
 /* ================= Geradores de perguntas ================= */
@@ -507,20 +628,20 @@ function gPre(){
   const n = P.set.players, ord = ORDER[n], pos = pick(ord.filter(p => p !== "BB")), [h, code] = playable();
   const right = chartAction(code, "open", n, pos);
   return { rows: [["Você", h]], text: `Mesa de ${n}, você no <b>${pos}</b>. Ninguém aumentou antes de você.`, opts: ["fold", "raise"], act: true, right: [right],
-    why: `${code} ${right === "raise" ? "está" : "não está"} no range de abertura do ${pos} (${pctI(rangePct(openSet(n, pos)))} das mãos). ${right === "raise" ? `Aumente pra ${money(3 * P.set.bb)}.` : "Largue."}`, chart: { code, mode: "open", n, pos } };
+    why: `${code} ${right === "raise" ? "está" : "não está"} no range de abertura do ${pos} (${pctI(rangePct(openSet(n, pos)))} das mãos). ${right === "raise" ? `Aumente pra ${money(3 * P.set.bb)}.` : "Largue."}<br><span class="muted">${code} ganha ${pctI(equityVs(h, [], ANY, 2500))} contra mão aleatória. ${handTip(code)}</span>`, chart: { code, mode: "open", n, pos } };
 }
 function gVsr(){
   const n = P.set.players, ord = ORDER[n], pos = pick(ord.slice(1)), before = ord.slice(0, ord.indexOf(pos)), raiser = pick(before);
   const [h, code] = playable(), size = chip(pick([2.5, 3, 3, 4]) * P.set.bb), right = chartAction(code, "vsraise", n, pos);
   return { rows: [["Você", h]], text: `Mesa de ${n}, você no <b>${pos}</b>. O <b>${raiser}</b> aumentou para ${money(size)}.`, opts: ["fold", "call", "raise"], act: true, right: [right],
-    why: right === "raise" ? `${code} está entre as melhores (TT+, AQs+, AK): 3-bet pra ~${money(3 * size)}.` : right === "call" ? `${code} joga bem mas não pra 3-bet: pague ${money(size)}.` : `Contra aumento, ${code} perde dinheiro. Largue.`, chart: { code, mode: "vsraise", n, pos } };
+    why: (right === "raise" ? `${code} está entre as melhores (TT+, AQs+, AK): 3-bet pra ~${money(3 * size)}.` : right === "call" ? `${code} joga bem mas não pra 3-bet: pague ${money(size)}.` : `Contra aumento, ${code} perde dinheiro. Largue.`) + `<br><span class="muted">${code}: ${pctI(equityVs(h, [], ANY, 2000))} contra mão aleatória, <b>${pctI(equityVs(h, [], mkRange("pos:" + raiser, n), 2500))}</b> contra o range de aumento do ${raiser}. ${handTip(code)}</span>`, chart: { code, mode: "vsraise", n, pos } };
 }
 function gOdds(){
   const Pt = chip(pick([10, 15, 20, 25, 30, 40, 50, 60, 80, 100, 150]) * P.set.bb / 2), fr = pick(BET_SIZES), B = chip(Pt * fr[0]);
   const right = Math.round(B / (Pt + 2 * B) * 100);
   return { rows: [], text: `Pote <b>${money(Pt)}</b>. O vilão aposta <b>${money(B)}</b> (${fr[1]}). Pra pagar, você precisa ganhar quantos % das vezes?`,
     opts: numOpts(right, [14, 17, 20, 23, 25, 27, 29, 30, 33, 36, 38, 40, 43, 45, 50].filter(x => Math.abs(x - right) >= 3), 4, x => x + "%"), right: [right + "%"],
-    why: `${money(B)} ÷ (${money(Pt)} + 2 × ${money(B)}) = ${right}%. Atalho: ${fr[1]} → ${right}%.` };
+    why: `${money(B)} ÷ (${money(Pt)} + 2 × ${money(B)}) = ${right}%. Atalho: ${fr[1]} → ${right}%.<br><span class="muted">No turn, com 1 carta por vir: flush draw (19%) ${19 >= right ? "<b>paga</b>" : "não paga"}, sequência aberta (17%) ${17 >= right ? "<b>paga</b>" : "não paga"}, gutshot (9%) ${9 >= right ? "<b>paga</b>" : "não paga"}, 15 outs (32%) ${32 >= right ? "<b>paga</b>" : "não paga"}.</span>` };
 }
 function drawSpot(){
   for (let i = 0; i < 500; i++){
@@ -535,10 +656,10 @@ function gOuts(){
   if (Math.random() < 0.35){
     const mult = nb === 3 ? 4 : 2, right = o.n * mult;
     return { rows: [["Você", h], ["Mesa", b]], text: `Você tem <b>${o.n} outs</b> ${nb === 3 ? "no flop e está all-in (2 cartas por vir)" : "no turn (1 carta por vir)"}. Chance aproximada de acertar?`,
-      opts: numOpts(right, [right - 8, right - 4, right + 4, right + 8, right - 2, right + 2].filter(x => x > 0), 4, x => x + "%"), right: [right + "%"], why: `${o.n} × ${mult} = ${right}% (exato ${pctI(o.prob)}).` };
+      opts: numOpts(right, [right - 8, right - 4, right + 4, right + 8, right - 2, right + 2].filter(x => x > 0), 4, x => x + "%"), right: [right + "%"], why: `${o.n} × ${mult} = ${right}% (exato ${pctI(o.prob)}).${nb === 3 && o.n > 8 ? ` Acima de 8 outs o ×4 exagera: ${o.n * 4} − ${o.n - 8} = ${o.n * 4 - (o.n - 8)}%.` : ""}${nb === 3 ? `<br><span class="muted">Se ainda tiver aposta no turn, conte só a próxima carta: ${o.n} × 2 ≈ ${o.n * 2}%.</span>` : ""}` };
   }
   return { rows: [["Você", h], ["Mesa", b]], text: "Quantas cartas (outs) melhoram a sua mão?", opts: numOpts(o.n, [o.n - 4, o.n - 2, o.n - 1, o.n + 1, o.n + 2, o.n + 4].filter(x => x > 0), 4, String), right: [String(o.n)],
-    why: `${o.n} outs (${parts}).<div class="mini" style="margin-top:6px">${o.list.map(x => miniCard(x.c)).join("")}</div>` };
+    why: `${o.n} outs (${parts}). Próxima carta ≈ <b>${pctI(o.next)}</b>${nb === 3 ? `, até o river ≈ <b>${pctI(o.prob)}</b>` : ""}.<div class="mini" style="margin-top:6px">${o.list.map(x => miniCard(x.c)).join("")}</div>` };
 }
 function gDraw(){
   for (let t = 0; t < 80; t++){
@@ -548,7 +669,7 @@ function gDraw(){
     if (Math.abs(eq - need) < 0.03) continue;
     const right = eq >= need ? "call" : "fold";
     return { rows: [["Você", h], ["Mesa", b]], text: `Pote <b>${money(Pt)}</b>. O vilão aposta <b>${money(B)}</b> (${fr[1]}). Ainda vem ${b.length === 3 ? "o turn e haverá mais apostas" : "o river"}. Pela conta, você paga?`, opts: ["fold", "call"], act: true, right: [right],
-      why: `${o.n} outs × 2 ≈ <b>${o.n * 2}%</b> (exato ${pctI(eq)}). Precisa de <b>${pctI(need)}</b>. ${right === "call" ? "Dá lucro pagar." : "Pela conta, largue (só pague com implied odds boas)."}` };
+      why: `${o.n} outs × 2 ≈ <b>${o.n * 2}%</b> (exato ${pctI(eq)}). Precisa de <b>${pctI(need)}</b>. ${right === "call" ? "Dá lucro pagar." : `Pela conta, largue. Só pague se for ganhar mais <b>~${money(Math.max(1, Math.round(B / eq - Pt - 2 * B)))}</b> quando acertar (implied odds = call ÷ chance − pote).`}${b.length === 3 ? `<br><span class="muted">Se fosse all-in (2 cartas por vir): ${o.n} × 4 ≈ ${o.n * 4}% (exato ${pctI(o.prob)}).</span>` : ""}` };
   }
   return gOdds();
 }
@@ -565,14 +686,14 @@ function gTex(){
   const wet = isWet(b);
   const sc = [0, 0, 0, 0]; b.forEach(c => sc[c & 3]++);
   const reason = wet ? (Math.max(...sc) >= 2 ? "tem 2+ cartas do mesmo naipe (flush draw possível)" : "tem cartas próximas (sequência possível)") : "naipes diferentes e cartas longe uma da outra";
-  if (Math.random() < 0.5) return { rows: [["Mesa", b]], text: "Esse flop é seco ou molhado?", opts: ["Seco", "Molhado"], right: [wet ? "Molhado" : "Seco"], why: `${wet ? "Molhado" : "Seco"}: ${reason}.` };
-  return { rows: [["Mesa", b]], text: "Você aumentou antes do flop e vai fazer c-bet. Tamanho?", opts: ["Pequeno (⅓)", "Grande (⅔)"], right: [wet ? "Grande (⅔)" : "Pequeno (⅓)"], why: `Flop ${wet ? "molhado" : "seco"} (${reason}) → ${wet ? "aposta grande, ⅔ do pote" : "aposta pequena, ⅓ do pote"}.` };
+  if (Math.random() < 0.5) return { rows: [["Mesa", b]], text: "Esse flop é seco ou molhado?", opts: ["Seco", "Molhado"], right: [wet ? "Molhado" : "Seco"], why: `${wet ? "Molhado" : "Seco"}: ${reason}.<br><span class="muted">${wet ? "Muita mão tem draw aqui: aposta pequena dá preço barato (flush draw contra ⅓ precisa de 20% e tem 35% até o river)." : "Pouca mão acerta esse flop: aposta pequena já faz par baixo e carta alta largar."}</span>` };
+  return { rows: [["Mesa", b]], text: "Você aumentou antes do flop e vai fazer c-bet. Tamanho?", opts: ["Pequeno (⅓)", "Grande (⅔)"], right: [wet ? "Grande (⅔)" : "Pequeno (⅓)"], why: `Flop ${wet ? "molhado" : "seco"} (${reason}) → ${wet ? "aposta grande, ⅔ do pote" : "aposta pequena, ⅓ do pote"}.<br><span class="muted">${wet ? "Contra ⅔ do pote o flush draw precisa de ~29% por carta e só tem 19%: você cobra caro pelos draws." : "No seco quem aumentou tem mais cartas altas: ⅓ do pote ganha quase o mesmo que ⅔ arriscando metade."}</span>` };
 }
 function gBlefe(){
   const Pt = chip(pick([20, 30, 40, 60, 80, 100]) * P.set.bb / 2), fr = pick(BET_SIZES.slice(0, 5)), B = chip(Pt * fr[0]);
   if (Math.random() < 0.5){
     const right = Math.round(B / (Pt + B) * 100);
-    return { rows: [], text: `Você blefa <b>${money(B)}</b> num pote de <b>${money(Pt)}</b> (${fr[1]}). Ele precisa largar quantos % das vezes pra o blefe dar lucro?`, opts: numOpts(right, [20, 25, 29, 33, 36, 40, 43, 50, 55, 60].filter(x => Math.abs(x - right) >= 3), 4, x => x + "%"), right: [right + "%"], why: `aposta ÷ (pote + aposta) = ${money(B)} ÷ ${money(Pt + B)} = ${right}%.` };
+    return { rows: [], text: `Você blefa <b>${money(B)}</b> num pote de <b>${money(Pt)}</b> (${fr[1]}). Ele precisa largar quantos % das vezes pra o blefe dar lucro?`, opts: numOpts(right, [20, 25, 29, 33, 36, 40, 43, 50, 55, 60].filter(x => Math.abs(x - right) >= 3), 4, x => x + "%"), right: [right + "%"], why: `aposta ÷ (pote + aposta) = ${money(B)} ÷ ${money(Pt + B)} = ${right}%.<br><span class="muted">Se ele larga mais que ${right}%, o blefe lucra mesmo com zero de equity. Contra nit, sim; contra calling station, não.</span>` };
   }
   const right = Math.round(Pt / (Pt + B) * 100);
   return { rows: [], text: `O vilão aposta <b>${money(B)}</b> num pote de <b>${money(Pt)}</b> (${fr[1]}). Quantos % das suas mãos você precisa continuar (MDF)?`, opts: numOpts(right, [40, 45, 50, 55, 60, 64, 67, 71, 75, 80].filter(x => Math.abs(x - right) >= 3), 4, x => x + "%"), right: [right + "%"], why: `pote ÷ (pote + aposta) = ${money(Pt)} ÷ ${money(Pt + B)} = ${right}%. Contra jogador passivo ao vivo, pode largar mais que isso.` };
@@ -590,8 +711,49 @@ function gStatic(id){
   const [q, r, ws] = pick(STATIC[id]);
   return { rows: [], text: q, opts: shuffle([r, ...ws]), one: true, right: [r], why: (MODS.find(m => m.id === id).lesson.match(/<div class="decore">([\s\S]*?)<\/div>/) || ["", ""])[1].replace(/<b>[^<]*<\/b>/, "").trim() };
 }
-const GEN = { fund: gFund, pos: gPos, pre: gPre, vsr: gVsr, odds: gOdds, outs: gOuts, draw: gDraw, tex: gTex, blefe: gBlefe, spr: gSpr, tipos: () => gStatic("tipos"), mente: () => gStatic("mente") };
+const EQ_RAND = [["As Ah", 85], ["Kc Kd", 82], ["Qs Qh", 80], ["Jd Jc", 77], ["Ts Th", 75], ["9c 9d", 72], ["8s 8h", 69], ["7d 7c", 66], ["6s 6h", 63], ["5c 5d", 60], ["4s 4h", 57], ["2d 2c", 50],
+  ["As Ks", 67], ["Ah Kd", 65], ["Ad Qd", 66], ["Kc Qc", 63], ["Ks Jd", 61], ["Qh Js", 58], ["Kd 9c", 58], ["Jh Th", 57], ["Ac 2h", 55], ["Ts 9s", 53], ["Qd 5c", 50], ["8h 7h", 48], ["7s 2d", 35]];
+const EQ_MATCH = [["As Ah", "Kc Kd", 82, "par maior × par menor ≈ 80/20"], ["Qs Qh", "Ac Kd", 57, "par × duas maiores ≈ 55/45"], ["Js Jh", "Tc 9d", 85, "par × duas menores ≈ 85/15"],
+  ["8s 8h", "Ac 2d", 70, "par × uma maior e uma menor ≈ 70/30"], ["As Kd", "8c 7c", 58, "duas maiores × duas menores ≈ 60/40"], ["As Kd", "Ac Qh", 72, "dominada ≈ 70/30 (+4% de empate)"],
+  ["As Kd", "2c 2h", 46, "AK × par pequeno: o par é leve favorito"], ["As Ah", "Ac Kd", 92, "AA × AK: o AK quase só ganha com sequência/flush"], ["Ks Jd", "Kc Qh", 24, "dominada: kicker pior ≈ 25/70"],
+  ["Ts Th", "Jc Jd", 18, "par menor × par maior ≈ 18/82"], ["Js Ts", "Ac Kd", 41, "duas menores suited × duas maiores ≈ 40/60"], ["Ks Qd", "Ac Jh", 40, "uma maior que a dele e uma menor ≈ 40/60"]];
+const EQ_FACT = [["Você tem um par na mão. Chance de flopar trinca ou melhor?", 12, "1 em 8. Por isso pagar aumento só pra trinca exige stack fundo (regra 15–20x)."],
+  ["Duas cartas diferentes. Chance de flopar pelo menos um par?", 32, "1 em 3. Nas outras 2 em 3 você erra o flop."],
+  ["Mão suited. Chance de flopar flush draw?", 11, "Só 11%: suited vale ~2% a mais de equity, não é motivo pra jogar mão ruim."],
+  ["Flush draw no flop, all-in. Chance de completar até o river?", 35, "9 outs × 4 = 36 (exato 35%)."],
+  ["Flush draw no turn. Chance de completar no river?", 19, "9 × 2 = 18 (exato 19,6%)."],
+  ["Sequência aberta no flop, all-in. Chance até o river?", 31, "8 × 4 = 32 (exato 31,5%)."],
+  ["Gutshot no flop, all-in. Chance até o river?", 17, "4 × 4 = 16 (exato 16,5%)."],
+  ["Flush draw + sequência aberta (15 outs) no flop, all-in. Chance até o river?", 54, "15 × 4 = 60, menos (15 − 8) = 53 (exato 54%). Você é favorito."],
+  ["Duas overcards no flop (6 outs), all-in. Chance de acertar até o river?", 24, "6 × 4 = 24."],
+  ["Par na mão no turn, querendo trinca no river (2 outs)?", 4, "2 × 2 = 4%. Quase nunca paga."],
+  ["AA contra 3 oponentes, all-in pré-flop. Quanto o AA ganha?", 64, "1 → 85% · 2 → 74% · 3 → 64% · 4 → 56%. Quanto mais gente, menos o AA vale."],
+  ["Chance de terminar a mão (7 cartas) com dois pares?", 24, "Carta alta 17 · par 44 · dois pares 24 · trinca 5 · sequência 4,6 · flush 3 · full 2,6."],
+  ["Chance de terminar a mão (7 cartas) com flush?", 3, "Flush 3% · full 2,6% · quadra 0,17%."]];
+const pctOpts = r => numOpts(r, [r - 12, r - 8, r - 5, r - 3, r + 3, r + 5, r + 8, r + 12].filter(x => x > 0 && x < 100), 4, x => x + "%");
+function gEq(){
+  const t = Math.random();
+  if (t < 0.3){ const [h, v] = pick(EQ_RAND), code = handCode(...CC(h));
+    return { rows: [["Você", CC(h)]], text: `All-in pré-flop contra <b>uma mão aleatória</b>. ${code} ganha quantos %?`, opts: pctOpts(v), right: [v + "%"],
+      why: `${code} ≈ <b>${v}%</b>. ${code.length === 2 ? "Pares: AA 85 e desce ~3% por degrau." : "Mão não pareada: o que importa é a carta mais alta e se ela domina as outras."} Lembre: ninguém aposta com mão aleatória, contra um range de aumento esse número cai.` }; }
+  if (t < 0.65){ const [h, v, w, rule] = pick(EQ_MATCH);
+    return { rows: [["Você", CC(h)], ["Vilão", CC(v)]], text: "All-in pré-flop. Quantos % você ganha?", opts: pctOpts(w), right: [w + "%"], why: `<b>${w}%</b>: ${rule}.` }; }
+  const [q, v, why] = pick(EQ_FACT);
+  return { rows: [], text: q, opts: pctOpts(v), right: [v + "%"], why: `<b>${v}%</b>. ${why}` };
+}
+const GEN = { fund: gFund, pos: gPos, pre: gPre, vsr: gVsr, eq: gEq, odds: gOdds, outs: gOuts, draw: gDraw, tex: gTex, blefe: gBlefe, spr: gSpr, tipos: () => gStatic("tipos"), mente: () => gStatic("mente") };
 
+function handTip(code){
+  const r1 = RANKS.indexOf(code[0]), r2 = RANKS.indexOf(code[1]), s = code[2] === "s";
+  if (code.length === 2) return r1 >= 8 ? "Par alto: contra duas cartas maiores é ~55/45 (QQ × AK); contra par menor ~80/20." : `Par ${r1 >= 5 ? "médio" : "pequeno"}: o lucro vem de flopar trinca (12%, 1 em 8). Pra pagar aumento, o stack atrás precisa ser 15–20x o call.`;
+  if (code[0] === "A" && r2 >= 9) return "Ás com kicker alto: domina Ax pior e é dominada por Ax melhor (AK × AQ ≈ 72/24). Contra par pequeno é ~46%.";
+  if (code[0] === "A" && s && r2 <= 3) return "Ás suited baixo (A5s–A2s): bom 3-bet de blefe: bloqueia AA/AK e faz o flush nuts.";
+  if (code[0] === "A" && r2 <= 7) return "Ás fraco: quando acerta o ás, perde pra kicker maior (A5 × A9 ≈ 25/59). Jogue em posição tardia, largue contra aumento de posição inicial.";
+  if (r1 >= 8 && r2 >= 8 && !s) return "Broadway offsuit: boa pra abrir, ruim pra pagar aumento forte. Fica dominada (KJ × KQ ≈ 24/71).";
+  if (s && r1 - r2 <= 2 && r1 <= 10) return "Suited conectada: flopa flush draw 11% e sequência aberta ~10%. Ganha em pote multiway com stack fundo.";
+  if (!s && r1 - r2 >= 4 && r1 < 12) return "Mão desconectada offsuit: ganha pouco quando acerta e perde pro kicker. Fold é o normal fora do botão.";
+  return s ? "Suited dá só ~2% a mais de equity que a mesma mão offsuit." : "";
+}
 /* ================= Estado da tela ================= */
 const V = { tab: "hoje", mod: null, run: null, review: null, showChart: false, showAll: false };
 let timerI = null;
@@ -691,7 +853,7 @@ function renderTrilha(M){
 function renderLesson(M){
   const m = MODS.find(x => x.id === V.mod), i = MODS.indexOf(m), cards = CARDS.filter(c => c.mod === m.id);
   M.innerHTML = `<section class="card lesson"><button type="button" class="back" data-act="back">← Trilha</button>
-    <div class="tag">${m.stage} · lição ${i + 1} de ${MODS.length}</div><h2 style="margin-top:6px">${m.title}</h2>${m.lesson}
+    <div class="tag">${m.stage} · lição ${i + 1} de ${MODS.length}</div><h2 style="margin-top:6px">${m.title}</h2>${m.lesson}${TIPS[m.id] ? `<div class="tips"><b>Na mesa</b><ul>${TIPS[m.id].map(t => `<li>${t}</li>`).join("")}</ul></div>` : ""}
     <button type="button" class="big gold" data-act="practice" data-m="${m.id}">▶ Praticar (10 perguntas)</button>
     ${cards.length ? `<button type="button" class="big alt" data-act="cards" data-m="${m.id}">Cartões deste tema (${cards.length})</button>` : ""}
     ${MODS[i + 1] ? `<button type="button" class="big alt" data-act="open" data-m="${MODS[i + 1].id}">Próxima: ${MODS[i + 1].title} →</button>` : ""}</section>`;
@@ -786,6 +948,7 @@ nextQ = function(){
 // ---------- Ranges ponderados (mesma lógica do Outs & Odds) ----------
 const ALL_COMBOS = [], COMBO_CODE = [];
 for (let a = 0; a < 52; a++) for (let b = a + 1; b < 52; b++){ ALL_COMBOS.push([a, b]); COMBO_CODE.push(handCode(a, b)); }
+const ANY = { w: new Float64Array(ALL_COMBOS.length).fill(1) };
 const VS3_4BET = parseRange("QQ+, AKs, AKo"), VS3_CALL = parseRange("99, TT, JJ, AQs, AJs, KQs, AQo");
 const BASES = {
   callopen: parseRange("99, 88, 77, 66, 55, 44, 33, 22, AJs, ATs, A9s, A5s, KQs, KJs, KTs, QJs, QTs, JTs, T9s, 98s, 87s, 76s, AQo, AJo, KQo"),
@@ -939,6 +1102,30 @@ function recPost(){
   }
   return { best, main, why: `${why}<br><span class="muted">${ctx}</span>`, eq, info };
 }
+function sizeName(bet, pot){ const f = bet / Math.max(pot, 1), near = BET_SIZES.concat([[2, "2x o pote"]]).reduce((a, b) => Math.abs(b[0] - f) < Math.abs(a[0] - f) ? b : a); return Math.abs(near[0] - f) < 0.04 ? near[1] : `${Math.round(f * 100)}% do pote`; }
+function tipsFor(){
+  const t = [], b = shown(), code = H.code;
+  if (H.street === "pre"){
+    if (H.eqAny == null) H.eqAny = equityVs(H.hero, [], ANY, 3000);
+    if (H.v){ const ev = equityVs(H.hero, [], H.v, 3000); t.push(`${code}: <b>${pctI(H.eqAny)}</b> contra mão aleatória, <b>${pctI(ev)}</b> contra o range dele.`); }
+    else t.push(`${code} ganha <b>${pctI(H.eqAny)}</b> contra mão aleatória. Quem paga seu aumento tem mão melhor que isso.`);
+    const ht = handTip(code); if (ht) t.push(ht);
+    const tc = r2h(H.vIn - H.hIn);
+    if (tc > 0){ const pot = potNow(); t.push(`Pagar ${money(tc)} num pote de ${money(pot)}: precisa de ${pctI(tc / (pot + tc))} de equity. Pré-flop isso é só o ponto de partida: posição e jogabilidade contam.`);
+      if (code.length === 2 && RANKS.indexOf(code[0]) < 8){ const ratio = Math.min(hLeft(), vLeft()) / tc; t.push(`Regra da trinca: stack efetivo ÷ call = ${Math.round(ratio)}x ${ratio >= 15 ? "(≥ 15x: call pra trinca vale)" : "(abaixo de 15x: pagar só pra trinca não compensa)"}.`); } }
+    return t;
+  }
+  const tc = r2h(H.vIn - H.hIn), pot = potNow(), outs = heroOuts();
+  if (tc > 0){ const c = Math.min(tc, hLeft()); t.push(`Aposta de ${money(tc)} = ${sizeName(tc, pot - tc)} → você precisa de <b>${pctI(c / (pot + c))}</b>.`); }
+  if (outs){ const o = computeOuts(H.hero, b);
+    t.push(H.street === "flop" ? `${outs} outs: ~<b>${pctI(o.next)}</b> no turn (${outs} × 2), ~<b>${pctI(o.prob)}</b> até o river se ficar all-in.` : `${outs} outs: ~<b>${pctI(o.next)}</b> no river (${outs} × 2).`); }
+  if (H.street === "flop"){ const spr = Math.min(H.hStack, H.vStack) / Math.max(H.pot, 1);
+    t.push(`SPR ${spr.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}: ${spr <= 3 ? "top pair já vale ir all-in." : spr <= 8 ? "pra colocar tudo, dois pares ou melhor." : "top pair é mão de pote pequeno; all-in só com mão muito forte."}`);
+    t.push(wetBoard(b) ? "Board molhado: com valor, aposte grande (⅔) pra cobrar dos draws." : "Board seco: aposta pequena (⅓) já faz o trabalho."); }
+  if (!(tc > 0) && H.street === "river") t.push(`Blefe de ⅔ do pote precisa de 40% de fold; de pote, 50%. Jogador recreativo ao vivo larga pouco no river: contra ele, blefe menos e aposte mais por valor.`);
+  if (tc > 0 && H.street === "river") t.push(`No river não tem draw: pague se ele blefar mais que ${pctI(Math.min(tc, hLeft()) / (pot + Math.min(tc, hLeft())))} das vezes que aposta assim.`);
+  return t.slice(0, 4);
+}
 // ---------- Ações do herói ----------
 const POST_OPTS_FACING = () => { const tc = r2h(H.vIn - H.hIn), o = [["fold", "Fold"], ["call", `Call ${money(Math.min(tc, hLeft()))}`]]; if (!H.raisedThisStreet && hLeft() > tc) { const to = Math.min(chip(H.vIn * 3), H.hStack); o.push(["raise", to >= H.hStack ? `All-in ${money(H.hStack - H.hIn)}` : `Raise ${money(to)}`]); } return o; };
 const POST_OPTS_OPEN = () => { const P = potNow(), L = hLeft(); return [["check", "Check"], ["b33", `⅓ ${money(Math.min(chip(P / 3), L))}`], ["b66", `⅔ ${money(Math.min(chip(P * 2 / 3), L))}`], ["b100", `Pote ${money(Math.min(chip(P), L))}`]]; };
@@ -959,7 +1146,7 @@ function heroChoose(k){
   const pr = H.prompt, rec = pr.rec, ok = rec.best.includes(k);
   const label = (pr.opts.find(o => o[0] === k) || [k, k])[1];
   H.dec.push({ st: H.street, chosen: label, ok, main: (pr.opts.find(o => o[0] === rec.main) || [rec.main, rec.main])[1] });
-  H.fb = { ok, chosen: label, rec, best: rec.best.map(b => (pr.opts.find(o => o[0] === b) || [b, b])[1]), apt: rec.best.length > 1 };
+  H.fb = { tips: tipsFor(), ok, chosen: label, rec, best: rec.best.map(b => (pr.opts.find(o => o[0] === b) || [b, b])[1]), apt: rec.best.length > 1 };
   scoreDec(H.street, ok);
   H.pendingAct = k;
 }
@@ -1112,6 +1299,7 @@ function renderHand(M){
     const f = H.fb;
     h += `<div class="opts ${pr.opts.length === 3 ? "three" : ""}">${pr.opts.map(([k, l]) => `<button type="button" class="opt hopt ${f.rec.best.includes(k) ? "right" : l === f.chosen ? "wrong" : "dim"}" disabled>${l}</button>`).join("")}</div>
       <div class="fb ${f.ok ? "ok" : "bad"}"><b>${f.ok ? (f.apt ? "✓ Boa (mais de uma opção vale)" : "✓ Certo") : "✗ Não é o ideal"}</b>${f.ok ? "" : ` · melhor: ${f.best.join(" ou ")}`}<p>${f.rec.why}</p>
+      ${f.tips && f.tips.length ? `<div class="htips"><b>Dicas</b><ul>${f.tips.map(x => `<li>${x}</li>`).join("")}</ul></div>` : ""}
       ${f.rec.info ? `<div class="rinfo"><small>Range dele agora: ${pctI(f.rec.info.share)} das mãos</small>${f.rec.info.parts.filter(p => p[0] !== "—").slice(0, 5).map(p => `<div class="rbar"><span>${p[0]}</span><i><em style="width:${(p[1] * 100).toFixed(0)}%"></em></i><b>${pctI(p[1])}</b></div>`).join("")}</div>` : ""}</div>
       ${f.rec.chart ? `<button type="button" class="linkbtn" data-act="chart">${V.showChart ? "▾" : "▸"} Ver a tabela</button>${V.showChart ? chartHTML(f.rec.chart) : ""}` : ""}
       <button type="button" class="big" data-act="hgo" id="hgo">Continuar a mão →</button>`;
