@@ -1,5 +1,5 @@
 // Trilha do Cash — service worker: guarda o app no aparelho para abrir sem internet.
-const CACHE = "trilha-cash-v2";
+const CACHE = "trilha-cash-v3";
 const ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png"];
 
 self.addEventListener("install", e => {

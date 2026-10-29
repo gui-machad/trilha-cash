@@ -267,19 +267,21 @@ function evalCards(cards, n){
   return kickers(0, 16, 5, -1, -1);
 }
 function computeOuts(hero, board){
-  const known = new Set([...hero, ...board]);
-  const cur = evalCards([...hero, ...board], 2 + board.length) >> 20;
-  const boardRanks = new Set(board.map(c => c >> 2)), list = [];
+  // Outs de draw: cartas que fazem sequência/flush (ou melhor) usando carta da mão.
+  // Com mão sem par, overcard que vira top pair também conta. Melhora de par → dois pares/trinca NÃO conta como out.
+  const all = [...hero, ...board], known = new Set(all);
+  const cur = evalCards(all, all.length) >> 20, bcur = evalCards(board, board.length) >> 20;
+  const made = cur > bcur, topB = Math.max(...board.map(c => c >> 2)), holeR = hero.map(c => c >> 2), list = [];
   for (let c = 0; c < 52; c++){
     if (known.has(c)) continue;
-    const hc = evalCards([...hero, ...board, c], 3 + board.length) >> 20, bc = evalCards([...board, c], 1 + board.length) >> 20;
+    const hc = evalCards([...all, c], all.length + 1) >> 20, bc = evalCards([...board, c], board.length + 1) >> 20;
     if (hc <= cur || hc <= bc) continue;
-    if (hc === 2 && boardRanks.has(c >> 2)) continue;
-    list.push({ c, cat: hc });
+    if (hc >= 4){ list.push({ c, cat: hc }); continue; }
+    if (!made && hc === 1 && holeR.includes(c >> 2) && (c >> 2) > topB) list.push({ c, cat: hc });
   }
   const unseen = 52 - known.size, n = list.length;
   const prob = board.length === 3 ? 1 - ((unseen - n) * (unseen - n - 1)) / (unseen * (unseen - 1)) : n / unseen;
-  return { list, n, prob, cur, next: n / unseen };
+  return { list, n, prob, cur, bcur, made, next: n / unseen };
 }
 const SUITS = ["♠︎", "♥︎", "♦︎", "♣︎"];
 const CAT = ["Carta alta","Par","Dois pares","Trinca","Sequência","Flush","Full house","Quadra","Straight flush"];
@@ -646,13 +648,13 @@ function gOdds(){
 function drawSpot(){
   for (let i = 0; i < 500; i++){
     const nb = Math.random() < 0.75 ? 3 : 4, c = deal(2 + nb), h = c.slice(0, 2), b = c.slice(2), o = computeOuts(h, b);
-    if (o.n >= 4 && o.n <= 15 && o.cur <= 1) return { h, b, o, nb };
+    if (o.n >= 4 && o.n <= 15 && !o.made && o.bcur === 0) return { h, b, o, nb }; // só draw de verdade: sem par seu e board sem par
   }
 }
 function gOuts(){
   const { h, b, o, nb } = drawSpot(), by = {};
   o.list.forEach(x => by[x.cat] = (by[x.cat] || 0) + 1);
-  const parts = Object.keys(by).sort((a, b2) => b2 - a).map(k => `${CAT[k]}: ${by[k]}`).join(" · ");
+  const parts = Object.keys(by).sort((a, b2) => b2 - a).map(k => `${k == 1 ? "Top pair" : CAT[k]}: ${by[k]}`).join(" · ");
   if (Math.random() < 0.35){
     const mult = nb === 3 ? 4 : 2, right = o.n * mult;
     return { rows: [["Você", h], ["Mesa", b]], text: `Você tem <b>${o.n} outs</b> ${nb === 3 ? "no flop e está all-in (2 cartas por vir)" : "no turn (1 carta por vir)"}. Chance aproximada de acertar?`,
@@ -669,7 +671,7 @@ function gDraw(){
     if (Math.abs(eq - need) < 0.03) continue;
     const right = eq >= need ? "call" : "fold";
     return { rows: [["Você", h], ["Mesa", b]], text: `Pote <b>${money(Pt)}</b>. O vilão aposta <b>${money(B)}</b> (${fr[1]}). Ainda vem ${b.length === 3 ? "o turn e haverá mais apostas" : "o river"}. Pela conta, você paga?`, opts: ["fold", "call"], act: true, right: [right],
-      why: `${o.n} outs × 2 ≈ <b>${o.n * 2}%</b> (exato ${pctI(eq)}). Precisa de <b>${pctI(need)}</b>. ${right === "call" ? "Dá lucro pagar." : `Pela conta, largue. Só pague se for ganhar mais <b>~${money(Math.max(1, Math.round(B / eq - Pt - 2 * B)))}</b> quando acertar (implied odds = call ÷ chance − pote).`}${b.length === 3 ? `<br><span class="muted">Se fosse all-in (2 cartas por vir): ${o.n} × 4 ≈ ${o.n * 4}% (exato ${pctI(o.prob)}).</span>` : ""}` };
+      why: `${o.n} outs × 2 ≈ <b>${o.n * 2}%</b> (exato ${pctI(eq)}). Precisa de <b>${pctI(need)}</b>. ${right === "call" ? "Dá lucro pagar." : `Pela conta, largue. Só pague se for ganhar mais <b>~${money(Math.max(1, Math.round(B / eq - Pt - 2 * B)))}</b> quando acertar (implied odds = call ÷ chance − pote).`}<br><span class="muted">Você não tem par: a conta assume que ele está na frente e que suas outs te colocam na frente dele.</span>${b.length === 3 ? `<br><span class="muted">Se fosse all-in (2 cartas por vir): ${o.n} × 4 ≈ ${o.n * 4}% (exato ${pctI(o.prob)}).</span>` : ""}` };
   }
   return gOdds();
 }
